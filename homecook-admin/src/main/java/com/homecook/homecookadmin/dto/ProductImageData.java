@@ -1,30 +1,14 @@
-package com.homecook.homecookdomain.model;
+package com.homecook.homecookadmin.dto;
 
-import javax.persistence.*;
-import java.util.List;
-
-@Table(name = "productimages", indexes = {
-        @Index(name = "idx_productimagemodel", columnList = "filename")
-})
-@Entity
-public class ProductImageModel extends AbstractBaseModel
+public class ProductImageData
 {
-    @Column(nullable = false, unique = true)
     private String filename;
     private String originfilename;
-    private Integer position;
     private String thumbnail;
     private String normal;
     private String detail;
     private String zoom;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private ProductModel product;
-
-    @OneToMany(mappedBy = "image")
-    private List<ProductVariantModel> variants;
-
+    private Integer position;
 
     public String getFilename()
     {
@@ -44,16 +28,6 @@ public class ProductImageModel extends AbstractBaseModel
     public void setOriginfilename(String originfilename)
     {
         this.originfilename = originfilename;
-    }
-
-    public Integer getPosition()
-    {
-        return position;
-    }
-
-    public void setPosition(Integer position)
-    {
-        this.position = position;
     }
 
     public String getThumbnail()
@@ -96,23 +70,13 @@ public class ProductImageModel extends AbstractBaseModel
         this.zoom = zoom;
     }
 
-    public ProductModel getProduct()
+    public Integer getPosition()
     {
-        return product;
+        return position;
     }
 
-    public void setProduct(ProductModel product)
+    public void setPosition(Integer position)
     {
-        this.product = product;
-    }
-
-    public List<ProductVariantModel> getVariants()
-    {
-        return variants;
-    }
-
-    public void setVariants(List<ProductVariantModel> variants)
-    {
-        this.variants = variants;
+        this.position = position;
     }
 }

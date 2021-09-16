@@ -12,6 +12,10 @@
     <packaging>jar</packaging>
     <description>The admin of homecook</description>
 
+    <properties>
+        <jvips.version>8.11.2-23d1446</jvips.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.homecook</groupId>
@@ -42,6 +46,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.criteo</groupId>
+            <artifactId>jvips</artifactId>
+            <version>${jvips.version}</version>
         </dependency>
     </dependencies>
 

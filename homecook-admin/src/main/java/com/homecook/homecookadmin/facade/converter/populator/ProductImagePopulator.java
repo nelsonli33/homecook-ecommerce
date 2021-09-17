@@ -13,6 +13,7 @@ public class ProductImagePopulator implements Populator<ProductImageModel, Produ
         Assert.notNull(source, "Parameter productImageModel cannot be null.");
         Assert.notNull(target, "Parameter productImageData cannot be null.");
 
+        target.setCode(source.getCode());
         target.setFilename(source.getFilename());
         target.setOriginfilename(source.getOriginfilename());
         target.setPosition(source.getPosition());

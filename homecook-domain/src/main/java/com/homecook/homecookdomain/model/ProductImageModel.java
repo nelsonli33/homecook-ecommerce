@@ -3,13 +3,15 @@ package com.homecook.homecookdomain.model;
 import javax.persistence.*;
 import java.util.List;
 
-@Table(name = "productimages", indexes = {
-        @Index(name = "idx_productimagemodel", columnList = "filename")
+
+@Table(name = "ProductImageModel", indexes = {
+        @Index(name = "idx_productimagemodel_code", columnList = "code")
 })
 @Entity
 public class ProductImageModel extends AbstractBaseModel
 {
     @Column(nullable = false, unique = true)
+    private String code;
     private String filename;
     private String originfilename;
     private Integer position;
@@ -25,6 +27,15 @@ public class ProductImageModel extends AbstractBaseModel
     @OneToMany(mappedBy = "image")
     private List<ProductVariantModel> variants;
 
+    public String getCode()
+    {
+        return code;
+    }
+
+    public void setCode(String code)
+    {
+        this.code = code;
+    }
 
     public String getFilename()
     {

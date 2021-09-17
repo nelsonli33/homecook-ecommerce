@@ -2,6 +2,7 @@ package com.homecook.homecookadmin.dto;
 
 public class ProductImageData
 {
+    private String code;
     private String filename;
     private String originfilename;
     private String thumbnail;
@@ -9,6 +10,16 @@ public class ProductImageData
     private String detail;
     private String zoom;
     private Integer position;
+
+    public String getCode()
+    {
+        return code;
+    }
+
+    public void setCode(String code)
+    {
+        this.code = code;
+    }
 
     public String getFilename()
     {

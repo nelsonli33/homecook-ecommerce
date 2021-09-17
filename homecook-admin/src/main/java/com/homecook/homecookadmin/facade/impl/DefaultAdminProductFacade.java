@@ -55,6 +55,7 @@ public class DefaultAdminProductFacade implements AdminProductFacade
         // if the number of uploaded images is not equal 4, then we will use cron job to remove the images not assigned to specific product.
         if(blobs.size() == 4) {
             ProductImageModel model = new ProductImageModel();
+            model.setCode(blobs.get(0).getName());
             model.setFilename(blobs.get(0).getName());
             model.setOriginfilename(file.getOriginalFilename());
 

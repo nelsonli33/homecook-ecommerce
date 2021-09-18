@@ -1,20 +1,18 @@
 package com.homecook.homecookadmin.facade;
 
-import com.homecook.homecookadmin.dto.CategoryData;
+import com.homecook.homecookadmin.dto.CategoryDTO;
 
 import java.util.List;
 
 public interface AdminCategoryFacade
 {
-    List<CategoryData> getAllCategories();
+    List<CategoryDTO> getAllCategories();
 
-    CategoryData getCategoryForId(Long id);
+    CategoryDTO getCategoryForId(Long id);
 
-    CategoryData createCategory(CategoryData categoryData);
+    CategoryDTO createCategory(CategoryDTO categoryDTO);
 
-    CategoryData updateCategory(Long id, CategoryData categoryData);
+    CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO);
 
     void deleteCategory(Long id);
-
-    void orderingCategories(List<CategoryData> categoryDataList);
 }

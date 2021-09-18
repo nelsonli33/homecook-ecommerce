@@ -1,7 +1,7 @@
 package com.homecook.homecookadmin.advice;
 
+import com.homecook.homecookadmin.model.CommonResponse;
 import com.homecook.homecookadmin.exception.HomecookAdminRuntimeException;
-import com.homecook.homecookadmin.dto.CommonResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,6 +17,7 @@ public class RestExceptionHandlerAdvice extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(HomecookAdminRuntimeException.class)
     protected ResponseEntity<CommonResponse> handleServerRuntimeException(HomecookAdminRuntimeException ex) {
+
         log.error("HomecookAdminRuntimeException {}({})", ex.getErrorCode(), ex.getErrorCode().getCode());
         log.error(ex.getLocalizedMessage());
 

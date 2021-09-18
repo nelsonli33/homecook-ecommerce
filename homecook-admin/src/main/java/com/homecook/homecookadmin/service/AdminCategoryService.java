@@ -1,18 +1,17 @@
 package com.homecook.homecookadmin.service;
 
-import com.homecook.homecookdomain.model.CategoryModel;
+
+import com.homecook.homecookentity.entity.CategoryEntity;
 
 import java.util.List;
 
 public interface AdminCategoryService
 {
-    List<CategoryModel> getAllCategories();
+    List<CategoryEntity> listCategories();
 
-    List<CategoryModel> getAllCategoriesForIds(List<Long> ids);
+    List<CategoryEntity> listCategoriesForIds(List<Long> ids);
 
-    CategoryModel getCategoryForId(Long id);
+    CategoryEntity getCategoryForId(Long id);
 
-    CategoryModel createCategory(CategoryModel categoryModel);
-
-    void addParentCategory(CategoryModel categoryModel, Long parentId);
+    void addParentCategory(CategoryEntity entity, Long parentId);
 }

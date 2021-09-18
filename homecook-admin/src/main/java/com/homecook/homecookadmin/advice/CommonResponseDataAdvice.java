@@ -1,7 +1,7 @@
 package com.homecook.homecookadmin.advice;
 
 import com.homecook.homecookadmin.annotation.IgnoreResponseAdvice;
-import com.homecook.homecookadmin.dto.CommonResponse;
+import com.homecook.homecookadmin.model.CommonResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;

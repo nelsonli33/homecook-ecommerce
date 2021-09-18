@@ -1,27 +1,22 @@
 package com.homecook.homecookadmin.facade.impl;
 
 import com.google.cloud.storage.Blob;
-import com.homecook.homecookadmin.controller.AdminProductImageController;
-import com.homecook.homecookadmin.dto.CategoryData;
 import com.homecook.homecookadmin.dto.ProductImageData;
 import com.homecook.homecookadmin.facade.AdminProductFacade;
 import com.homecook.homecookadmin.service.AdminProductImageService;
 import com.homecook.homecookcommon.converter.Converter;
-import com.homecook.homecookdomain.model.CategoryModel;
-import com.homecook.homecookdomain.model.ProductImageModel;
-import com.homecook.homecookdomain.service.ModelService;
+import com.homecook.homecookentity.entity.ProductImageEntity;
+import com.homecook.homecookentity.service.ModelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 @Component(value = "adminProductFacade")
 public class DefaultAdminProductFacade implements AdminProductFacade
@@ -29,19 +24,19 @@ public class DefaultAdminProductFacade implements AdminProductFacade
     private static final Logger log = LoggerFactory.getLogger(DefaultAdminProductFacade.class);
 
     private AdminProductImageService adminProductImageService;
+    private Converter<ProductImageEntity, ProductImageData> adminProductImageConverter;
     private ModelService modelService;
-    private Converter<ProductImageModel, ProductImageData> adminProductImageConverter;
 
     @Autowired
     public DefaultAdminProductFacade(
             @Qualifier(value = "adminProductImageService") AdminProductImageService adminProductImageService,
             @Qualifier(value = "modelService") ModelService modelService,
-            @Qualifier(value = "adminProductImageConverter") Converter<ProductImageModel, ProductImageData> adminProductImageConverter
+            @Qualifier(value = "adminProductImageConverter") Converter<ProductImageEntity, ProductImageData> adminProductImageConverter
     )
     {
         this.adminProductImageService = adminProductImageService;
-        this.modelService = modelService;
         this.adminProductImageConverter = adminProductImageConverter;
+        this.modelService = modelService;
     }
 
     public ProductImageData uploadProductImage(MultipartFile file) {
@@ -54,21 +49,21 @@ public class DefaultAdminProductFacade implements AdminProductFacade
         ProductImageData productImageData = null;
         // if the number of uploaded images is not equal 4, then we will use cron job to remove the images not assigned to specific product.
         if(blobs.size() == 4) {
-            ProductImageModel model = new ProductImageModel();
-            model.setCode(blobs.get(0).getName());
-            model.setFilename(blobs.get(0).getName());
-            model.setOriginfilename(file.getOriginalFilename());
+            ProductImageEntity entity = new ProductImageEntity();
+            entity.setCode(blobs.get(0).getName());
+            entity.setFilename(blobs.get(0).getName());
+            entity.setOriginfilename(file.getOriginalFilename());
 
             final Map<String, String> metadata = blobs.get(0).getMetadata();
             final String zoomImageName
                     = adminProductImageService.getImagename(blobs.get(0).getName(), Integer.parseInt(metadata.get("width")), Integer.parseInt(metadata.get("height")));
-            model.setZoom(zoomImageName);
-            model.setDetail(blobs.get(1).getName());
-            model.setNormal(blobs.get(2).getName());
-            model.setThumbnail(blobs.get(3).getName());
+            entity.setZoom(zoomImageName);
+            entity.setDetail(blobs.get(1).getName());
+            entity.setNormal(blobs.get(2).getName());
+            entity.setThumbnail(blobs.get(3).getName());
 
-            modelService.save(model);
-            productImageData = adminProductImageConverter.convert(model);
+            modelService.save(entity);
+            productImageData = adminProductImageConverter.convert(entity);
         }
         return productImageData;
     }

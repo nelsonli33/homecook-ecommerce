@@ -8,7 +8,7 @@ public enum InternalErrorCode
 
     INVALID_REQUEST_BODY(10),
 
-    MODELID_NOT_FOUND(100),
+    ENTITY_NOT_FOUND(100),
 
 
     FILE_PATH_ERROR(200),

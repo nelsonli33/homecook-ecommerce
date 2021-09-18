@@ -1,18 +1,19 @@
 package com.homecook.homecookadmin.controller;
 
-import com.homecook.homecookadmin.dto.CategoryData;
+import com.homecook.homecookadmin.controller.converter.CategoryRestMapper;
+import com.homecook.homecookadmin.dto.CategoryDTO;
 import com.homecook.homecookadmin.facade.AdminCategoryFacade;
-import com.homecook.homecookadmin.form.CategoryForm;
-import com.homecook.homecookadmin.util.ReqMsgValidator;
+import com.homecook.homecookadmin.model.Category;
+import com.homecook.homecookadmin.model.CreateCategoryRequest;
+import com.homecook.homecookadmin.model.UpdateCategoryRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/admin/api/v1/categories")
@@ -20,60 +21,55 @@ public class AdminCategoryController
 {
     private static final Logger log = LoggerFactory.getLogger(AdminCategoryController.class);
 
-    @Resource(name = "adminCategoryFacade")
     private AdminCategoryFacade adminCategoryFacade;
+    private CategoryRestMapper categoryRestMapper;
 
+    @Autowired
+    public AdminCategoryController(AdminCategoryFacade adminCategoryFacade, CategoryRestMapper categoryRestMapper)
+    {
+        this.adminCategoryFacade = adminCategoryFacade;
+        this.categoryRestMapper = categoryRestMapper;
+    }
 
     @GetMapping
-    public ResponseEntity<List<CategoryData>> listCategories() {
-        List<CategoryData> categories = adminCategoryFacade.getAllCategories();
+    public ResponseEntity<List<Category>> listCategories() {
+        List<CategoryDTO> categoryDTOS = adminCategoryFacade.getAllCategories();
+        final List<Category> categories = categoryRestMapper.convertAllDTOtoResponse(categoryDTOS);
+
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categories);
     }
 
     @GetMapping("/{categoryId}")
-    public ResponseEntity<CategoryData> categoryDetail(@PathVariable("categoryId") Long categoryId) {
-        CategoryData categoryData = adminCategoryFacade.getCategoryForId(categoryId);
+    public ResponseEntity<Category> getCategoryDetail(@PathVariable("categoryId") Long categoryId) {
+        CategoryDTO categoryDTO = adminCategoryFacade.getCategoryForId(categoryId);
+        final Category category = categoryRestMapper.convertDTOtoResponse(categoryDTO);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(categoryData);
+                .body(category);
     }
 
     @PostMapping
-    public ResponseEntity<CategoryData> createCategory(@RequestBody CategoryForm form) {
-        ReqMsgValidator.validateCategoryForm(form);
-        CategoryData categoryData = adminCategoryFacade.createCategory(fillCategoryFormToData(form));
+    public ResponseEntity<Category> createCategory(@RequestBody CreateCategoryRequest createCategoryRequest) {
+        CategoryDTO categoryDTO = categoryRestMapper.convertRequestToDTO(createCategoryRequest);
+        CategoryDTO categoryData = adminCategoryFacade.createCategory(categoryDTO);
+        Category category = categoryRestMapper.convertDTOtoResponse(categoryData);
+
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(categoryData);
+                .status(HttpStatus.CREATED)
+                .body(category);
     }
 
     @PutMapping("/{categoryId}")
-    public ResponseEntity<CategoryData> editCategory(@PathVariable("categoryId") Long categoryId, @RequestBody CategoryForm form) {
-        ReqMsgValidator.validateCategoryForm(form);
-        CategoryData categoryData = adminCategoryFacade.updateCategory(categoryId, fillCategoryFormToData(form));
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(categoryData);
-    }
-
-
-
-    @PutMapping("/ordering")
-    public ResponseEntity<List<Object>> bulkEditCategories(@RequestBody List<CategoryForm> forms) {
-        List<CategoryData> categoryDataList = forms.stream().map(form -> {
-            CategoryData categoryData = new CategoryData();
-            categoryData.setId(form.getId());
-            categoryData.setSortOrder(form.getSortOrder());
-            return categoryData;
-        }).collect(Collectors.toList());
-
-        adminCategoryFacade.orderingCategories(categoryDataList);
+    public ResponseEntity<Category> updateCategory(@PathVariable("categoryId") Long categoryId, @RequestBody UpdateCategoryRequest updateCategoryRequest) {
+        final CategoryDTO categoryDTO = categoryRestMapper.convertRequestToDTO(updateCategoryRequest);
+        CategoryDTO categoryData = adminCategoryFacade.updateCategory(categoryId, categoryDTO);
+        Category category = categoryRestMapper.convertDTOtoResponse(categoryData);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(null);
+                .body(category);
     }
 
 
@@ -86,14 +82,5 @@ public class AdminCategoryController
     }
 
 
-    private CategoryData fillCategoryFormToData(CategoryForm form)
-    {
-        CategoryData data = new CategoryData();
-        data.setName(form.getName());
-        data.setSortOrder(form.getSortOrder());
-        data.setMetaTitle(form.getMetaTitle());
-        data.setMetaDescription(form.getMetaDescription());
-        data.setParentId(form.getParentId());
-        return data;
-    }
+
 }

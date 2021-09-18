@@ -31,7 +31,7 @@
 
     <modules>
         <module>homecook-admin</module>
-        <module>homecook-domain</module>
+        <module>homecook-entity</module>
         <module>homecook-common</module>
     </modules>
 
@@ -44,7 +44,7 @@
             </dependency>
             <dependency>
                 <groupId>com.homecook</groupId>
-                <artifactId>homecook-domain</artifactId>
+                <artifactId>homecook-entity</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

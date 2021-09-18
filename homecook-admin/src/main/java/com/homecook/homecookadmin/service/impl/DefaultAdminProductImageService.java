@@ -11,7 +11,6 @@ import com.homecook.homecookadmin.service.AdminProductImageService;
 import com.homecook.homecookadmin.util.FileUtil;
 import com.homecook.homecookcommon.dto.FileInfo;
 import com.homecook.homecookcommon.service.GCSStorageService;
-
 import com.homecook.homecookcommon.service.impl.GUIDKeyGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

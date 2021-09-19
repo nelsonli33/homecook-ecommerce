@@ -1,6 +1,6 @@
 package com.homecook.homecookadmin.controller;
 
-import com.homecook.homecookadmin.dto.ProductImageData;
+import com.homecook.homecookadmin.dto.ProductImageDTO;
 import com.homecook.homecookadmin.error.InternalErrorCode;
 import com.homecook.homecookadmin.exception.HomecookAdminRuntimeException;
 import com.homecook.homecookadmin.facade.AdminProductFacade;
@@ -33,7 +33,7 @@ public class AdminProductImageController
     GCSStorageService gcsStorageService;
 
     @PostMapping(value = "/upload")
-    public ResponseEntity<ProductImageData> productImageUpload(@RequestParam("file") MultipartFile file) throws ExecutionException, InterruptedException
+    public ResponseEntity<ProductImageDTO> productImageUpload(@RequestParam("file") MultipartFile file) throws ExecutionException, InterruptedException
     {
         if (file.isEmpty())
         {

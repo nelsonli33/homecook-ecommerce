@@ -1,14 +1,14 @@
 package com.homecook.homecookadmin.facade.converter;
 
-import com.homecook.homecookadmin.dto.ProductImageData;
+import com.homecook.homecookadmin.dto.ProductImageDTO;
 import com.homecook.homecookcommon.converter.Populator;
 import com.homecook.homecookentity.entity.ProductImageEntity;
 import org.springframework.util.Assert;
 
-public class ProductImagePopulator implements Populator<ProductImageEntity, ProductImageData>
+public class ProductImagePopulator implements Populator<ProductImageEntity, ProductImageDTO>
 {
     @Override
-    public void populate(ProductImageEntity source, ProductImageData target)
+    public void populate(ProductImageEntity source, ProductImageDTO target)
     {
         Assert.notNull(source, "Parameter productImageModel cannot be null.");
         Assert.notNull(target, "Parameter productImageData cannot be null.");

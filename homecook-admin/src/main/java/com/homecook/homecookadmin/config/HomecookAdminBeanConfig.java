@@ -1,7 +1,7 @@
 package com.homecook.homecookadmin.config;
 
 import com.google.cloud.storage.Storage;
-import com.homecook.homecookadmin.dto.ProductImageData;
+import com.homecook.homecookadmin.dto.ProductImageDTO;
 import com.homecook.homecookadmin.facade.converter.ProductImagePopulator;
 import com.homecook.homecookcommon.converter.Converter;
 import com.homecook.homecookcommon.converter.impl.PopulatingConverter;
@@ -42,10 +42,10 @@ public class HomecookAdminBeanConfig
     }
 
     @Bean(name = "adminProductImageConverter")
-    public Converter<ProductImageEntity, ProductImageData> adminProductImageConverter()
+    public Converter<ProductImageEntity, ProductImageDTO> adminProductImageConverter()
     {
-        PopulatingConverter<ProductImageEntity, ProductImageData> converter = new PopulatingConverter<>();
-        converter.setTargetClass(ProductImageData.class);
+        PopulatingConverter<ProductImageEntity, ProductImageDTO> converter = new PopulatingConverter<>();
+        converter.setTargetClass(ProductImageDTO.class);
         converter.setPopulators(Arrays.asList(adminProductImagePopulator()));
         return converter;
     }

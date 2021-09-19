@@ -1,6 +1,6 @@
 package com.homecook.homecookadmin.dto;
 
-public class ProductImageData
+public class ProductImageDTO
 {
     private String code;
     private String filename;

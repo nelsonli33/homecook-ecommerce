@@ -1,9 +1,9 @@
 package com.homecook.homecookadmin.facade;
 
-import com.homecook.homecookadmin.dto.ProductImageData;
+import com.homecook.homecookadmin.dto.ProductImageDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface AdminProductFacade
 {
-    ProductImageData uploadProductImage(MultipartFile file);
+    ProductImageDTO uploadProductImage(MultipartFile file);
 }

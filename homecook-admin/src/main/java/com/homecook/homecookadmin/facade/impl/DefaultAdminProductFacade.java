@@ -1,7 +1,7 @@
 package com.homecook.homecookadmin.facade.impl;
 
 import com.google.cloud.storage.Blob;
-import com.homecook.homecookadmin.dto.ProductImageData;
+import com.homecook.homecookadmin.dto.ProductImageDTO;
 import com.homecook.homecookadmin.facade.AdminProductFacade;
 import com.homecook.homecookadmin.service.AdminProductImageService;
 import com.homecook.homecookcommon.converter.Converter;
@@ -24,14 +24,14 @@ public class DefaultAdminProductFacade implements AdminProductFacade
     private static final Logger log = LoggerFactory.getLogger(DefaultAdminProductFacade.class);
 
     private AdminProductImageService adminProductImageService;
-    private Converter<ProductImageEntity, ProductImageData> adminProductImageConverter;
+    private Converter<ProductImageEntity, ProductImageDTO> adminProductImageConverter;
     private ModelService modelService;
 
     @Autowired
     public DefaultAdminProductFacade(
             @Qualifier(value = "adminProductImageService") AdminProductImageService adminProductImageService,
             @Qualifier(value = "modelService") ModelService modelService,
-            @Qualifier(value = "adminProductImageConverter") Converter<ProductImageEntity, ProductImageData> adminProductImageConverter
+            @Qualifier(value = "adminProductImageConverter") Converter<ProductImageEntity, ProductImageDTO> adminProductImageConverter
     )
     {
         this.adminProductImageService = adminProductImageService;
@@ -39,14 +39,14 @@ public class DefaultAdminProductFacade implements AdminProductFacade
         this.modelService = modelService;
     }
 
-    public ProductImageData uploadProductImage(MultipartFile file) {
+    public ProductImageDTO uploadProductImage(MultipartFile file) {
         final List<Blob> blobs =
                 adminProductImageService.uploadProductImage(file);
 
         sortBlobsByImageWidthDESC(blobs);
 
 
-        ProductImageData productImageData = null;
+        ProductImageDTO productImageDTO = null;
         // if the number of uploaded images is not equal 4, then we will use cron job to remove the images not assigned to specific product.
         if(blobs.size() == 4) {
             ProductImageEntity entity = new ProductImageEntity();
@@ -63,9 +63,9 @@ public class DefaultAdminProductFacade implements AdminProductFacade
             entity.setThumbnail(blobs.get(3).getName());
 
             modelService.save(entity);
-            productImageData = adminProductImageConverter.convert(entity);
+            productImageDTO = adminProductImageConverter.convert(entity);
         }
-        return productImageData;
+        return productImageDTO;
     }
 
 

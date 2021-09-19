@@ -1,6 +1,6 @@
 package com.homecook.homecookadmin.controller;
 
-import com.homecook.homecookadmin.controller.converter.CategoryRestMapper;
+import com.homecook.homecookadmin.controller.mapper.CategoryRestMapper;
 import com.homecook.homecookadmin.dto.CategoryDTO;
 import com.homecook.homecookadmin.facade.AdminCategoryFacade;
 import com.homecook.homecookadmin.model.Category;

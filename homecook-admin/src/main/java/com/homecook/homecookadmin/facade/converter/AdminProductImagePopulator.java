@@ -3,9 +3,11 @@ package com.homecook.homecookadmin.facade.converter;
 import com.homecook.homecookadmin.dto.ProductImageDTO;
 import com.homecook.homecookcommon.converter.Populator;
 import com.homecook.homecookentity.entity.ProductImageEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-public class ProductImagePopulator implements Populator<ProductImageEntity, ProductImageDTO>
+@Component(value = "adminProductImagePopulator")
+public class AdminProductImagePopulator implements Populator<ProductImageEntity, ProductImageDTO>
 {
     @Override
     public void populate(ProductImageEntity source, ProductImageDTO target)

@@ -25,7 +25,7 @@ public class CategoryEntity extends AbstractBaseEntity
     @JoinColumn(name = "parent_id")
     private CategoryEntity parent;
 
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="parent")
+    @OneToMany(cascade= CascadeType.ALL, mappedBy="parent")
     private Set<CategoryEntity> children = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)

@@ -1,11 +1,14 @@
 package com.homecook.homecookadmin.config;
 
 import com.google.cloud.storage.Storage;
+import com.homecook.homecookadmin.dto.CategoryDTO;
 import com.homecook.homecookadmin.dto.ProductImageDTO;
-import com.homecook.homecookadmin.facade.converter.ProductImagePopulator;
+import com.homecook.homecookadmin.facade.converter.AdminCategoryPopulator;
+import com.homecook.homecookadmin.facade.converter.AdminProductImagePopulator;
 import com.homecook.homecookcommon.converter.Converter;
 import com.homecook.homecookcommon.converter.impl.PopulatingConverter;
 import com.homecook.homecookcommon.service.impl.DefaultGCSStorageService;
+import com.homecook.homecookentity.entity.CategoryEntity;
 import com.homecook.homecookentity.entity.ProductImageEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,10 +38,24 @@ public class HomecookAdminBeanConfig
         return new DefaultGCSStorageService(bucketName, storage);
     }
 
+
+
+
+
     // <!--- converters and populators --->
-    @Bean(name = "adminProductImagePopulator")
-    public ProductImagePopulator adminProductImagePopulator() {
-        return new ProductImagePopulator();
+    @Autowired
+    private AdminCategoryPopulator adminCategoryPopulator;
+
+    @Autowired
+    private AdminProductImagePopulator adminProductImagePopulator;
+
+    @Bean(name = "adminCategoryConverter")
+    public Converter<CategoryEntity, CategoryDTO> adminCategoryPopulator()
+    {
+        PopulatingConverter<CategoryEntity, CategoryDTO> converter = new PopulatingConverter<>();
+        converter.setTargetClass(CategoryDTO.class);
+        converter.setPopulators(Arrays.asList(adminCategoryPopulator));
+        return converter;
     }
 
     @Bean(name = "adminProductImageConverter")
@@ -46,7 +63,7 @@ public class HomecookAdminBeanConfig
     {
         PopulatingConverter<ProductImageEntity, ProductImageDTO> converter = new PopulatingConverter<>();
         converter.setTargetClass(ProductImageDTO.class);
-        converter.setPopulators(Arrays.asList(adminProductImagePopulator()));
+        converter.setPopulators(Arrays.asList(adminProductImagePopulator));
         return converter;
     }
 }

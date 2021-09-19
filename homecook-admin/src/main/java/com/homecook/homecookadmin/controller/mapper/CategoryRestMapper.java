@@ -1,4 +1,4 @@
-package com.homecook.homecookadmin.controller.converter;
+package com.homecook.homecookadmin.controller.mapper;
 
 import com.homecook.homecookadmin.dto.CategoryDTO;
 import com.homecook.homecookadmin.model.Category;

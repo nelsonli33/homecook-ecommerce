@@ -2,8 +2,9 @@ package com.homecook.homecookadmin.facade.impl;
 
 import com.homecook.homecookadmin.dto.CategoryDTO;
 import com.homecook.homecookadmin.facade.AdminCategoryFacade;
-import com.homecook.homecookadmin.facade.converter.AdminCategoryMapper;
 import com.homecook.homecookadmin.service.AdminCategoryService;
+import com.homecook.homecookcommon.converter.Converter;
+import com.homecook.homecookcommon.converter.Populator;
 import com.homecook.homecookentity.entity.CategoryEntity;
 import com.homecook.homecookentity.service.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,62 +18,59 @@ public class DefaultAdminCategoryFacade implements AdminCategoryFacade
 {
     private AdminCategoryService adminCategoryService;
     private ModelService modelService;
-    private AdminCategoryMapper adminCategoryMapper;
+    private Converter<CategoryEntity, CategoryDTO> adminCategoryConverter;
+    private Populator<CategoryDTO, CategoryEntity> adminCategoryReversePopulator;
 
     @Autowired
     public DefaultAdminCategoryFacade(
             @Qualifier(value = "adminCategoryService") AdminCategoryService adminCategoryService,
             @Qualifier(value = "modelService") ModelService modelService,
-            @Qualifier(value = "adminCategoryMapper") AdminCategoryMapper adminCategoryMapper
+            @Qualifier(value = "adminCategoryConverter") Converter<CategoryEntity, CategoryDTO> adminCategoryConverter,
+            @Qualifier(value = "adminCategoryReversePopulator") Populator<CategoryDTO, CategoryEntity> adminCategoryReversePopulator
     )
     {
         this.adminCategoryService = adminCategoryService;
         this.modelService = modelService;
-        this.adminCategoryMapper = adminCategoryMapper;
+        this.adminCategoryConverter = adminCategoryConverter;
+        this.adminCategoryReversePopulator = adminCategoryReversePopulator;
     }
 
     @Override
     public List<CategoryDTO> getAllCategories()
     {
         List<CategoryEntity> allCategories = adminCategoryService.listCategories();
-        return adminCategoryMapper.convertAllToDto(allCategories);
+        return adminCategoryConverter.convertAll(allCategories);
     }
 
     @Override
     public CategoryDTO getCategoryForId(Long id)
     {
-        return adminCategoryMapper.convertToDto(adminCategoryService.getCategoryForId(id));
+        return adminCategoryConverter.convert(adminCategoryService.getCategoryForId(id));
     }
 
     @Override
     public CategoryDTO createCategory(CategoryDTO categoryDTO)
     {
-        CategoryEntity categoryModel = adminCategoryMapper.convertToModel(categoryDTO);
-        if (categoryDTO.getParentId() != null) {
-            adminCategoryService.addParentCategory(categoryModel, categoryDTO.getParentId());
-        }
-        getModelService().save(categoryModel);
-        return adminCategoryMapper.convertToDto(categoryModel);
+        CategoryEntity categoryEntity = new CategoryEntity();
+        adminCategoryReversePopulator.populate(categoryDTO, categoryEntity);
+        getModelService().save(categoryEntity);
+        return adminCategoryConverter.convert(categoryEntity);
     }
 
     @Override
     public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO)
     {
-        CategoryEntity categoryModel = adminCategoryService.getCategoryForId(id);
-        adminCategoryMapper.populateDtoToModel(categoryDTO, categoryModel);
-        if (categoryDTO.getParentId() != null)
-        {
-            adminCategoryService.addParentCategory(categoryModel, categoryDTO.getParentId());
-        }
-        getModelService().save(categoryModel);
-        return adminCategoryMapper.convertToDto(categoryModel);
+        CategoryEntity categoryEntity = adminCategoryService.getCategoryForId(id);
+        adminCategoryReversePopulator.populate(categoryDTO, categoryEntity);
+        getModelService().save(categoryEntity);
+        return adminCategoryConverter.convert(categoryEntity);
     }
 
     @Override
     public void deleteCategory(Long id)
     {
-        CategoryEntity categoryModel = adminCategoryService.getCategoryForId(id);
-        getModelService().remove(categoryModel);
+        CategoryEntity categoryEntity = adminCategoryService.getCategoryForId(id);
+        getModelService().remove(categoryEntity);
     }
 
 
@@ -95,15 +93,5 @@ public class DefaultAdminCategoryFacade implements AdminCategoryFacade
     public void setModelService(ModelService modelService)
     {
         this.modelService = modelService;
-    }
-
-    public AdminCategoryMapper getAdminCategoryMapper()
-    {
-        return adminCategoryMapper;
-    }
-
-    public void setAdminCategoryMapper(AdminCategoryMapper adminCategoryMapper)
-    {
-        this.adminCategoryMapper = adminCategoryMapper;
     }
 }

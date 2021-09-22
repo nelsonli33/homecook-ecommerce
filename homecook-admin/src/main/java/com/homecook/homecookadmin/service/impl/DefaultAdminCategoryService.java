@@ -26,13 +26,13 @@ public class DefaultAdminCategoryService implements AdminCategoryService
     }
 
     @Override
-    public List<CategoryEntity> listCategories()
+    public List<CategoryEntity> getCategories()
     {
         return categoryRepository.findAll();
     }
 
     @Override
-    public List<CategoryEntity> listCategoriesForIds(List<Long> ids)
+    public List<CategoryEntity> getCategoriesForIds(List<Long> ids)
     {
         List<CategoryEntity> categoryEntities = this.categoryRepository.findAllById(ids);
         if (CollectionUtils.isEmpty(categoryEntities)) {

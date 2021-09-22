@@ -2,9 +2,11 @@ package com.homecook.homecookentity.entity;
 
 import com.homecook.homecookentity.constant.EntityConstant;
 import com.homecook.homecookentity.type.ProductStatusType;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,15 +15,16 @@ import java.util.Set;
 @DynamicUpdate
 public class ProductEntity extends AbstractBaseEntity
 {
-
     private String name;
     private String summary;
     @Column(length = 65535, columnDefinition = "TEXT")
     private String description;
     private Integer quantity;
+    @Column(columnDefinition = "DECIMAL(10,2)")
     private Double price;
     private String sku;
     private Integer daysToShip;
+    @ColumnDefault("0")
     private ProductStatusType status; // 商品上下架狀態：0下架, 1上架, 2已删除
     private Integer maxOrderQuantity;
     private Integer minOrderQuantity;
@@ -29,16 +32,14 @@ public class ProductEntity extends AbstractBaseEntity
     @Column(length = 1000, columnDefinition = "TEXT")
     private String metaDescription;
 
-    @ManyToMany(
-            cascade = { CascadeType.PERSIST, CascadeType.MERGE }
-    )
-    @JoinTable(name = "product2catrel",
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = EntityConstant.Table.Product2Category,
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<CategoryEntity> categories;
+    private Set<CategoryEntity> categories = new HashSet<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductAttributeEntity> attributes;
+    private List<ProductSpecAttributeEntity> specs;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductVariantEntity> variants;
@@ -176,14 +177,14 @@ public class ProductEntity extends AbstractBaseEntity
         this.categories = categories;
     }
 
-    public List<ProductAttributeEntity> getAttributes()
+    public List<ProductSpecAttributeEntity> getSpecs()
     {
-        return attributes;
+        return specs;
     }
 
-    public void setAttributes(List<ProductAttributeEntity> attributes)
+    public void setSpecs(List<ProductSpecAttributeEntity> specs)
     {
-        this.attributes = attributes;
+        this.specs = specs;
     }
 
     public List<ProductVariantEntity> getVariants()

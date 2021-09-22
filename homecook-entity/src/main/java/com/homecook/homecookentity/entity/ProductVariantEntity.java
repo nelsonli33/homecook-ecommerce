@@ -11,6 +11,7 @@ import javax.persistence.*;
 public class ProductVariantEntity extends AbstractBaseEntity
 {
     private String name;
+    @Column(columnDefinition = "DECIMAL(10,2)")
     private Double price;
     private Integer quantity;
     private String sku;
@@ -29,6 +30,7 @@ public class ProductVariantEntity extends AbstractBaseEntity
     private ProductAttributeValueEntity specValue3;
 
     @ManyToOne(fetch = FetchType.LAZY)
+
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 

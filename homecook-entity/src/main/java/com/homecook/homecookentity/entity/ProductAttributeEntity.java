@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = EntityConstant.Table.ProductAttributeCategory)
+@Table(name = EntityConstant.Table.ProductAttribute)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="type", discriminatorType = DiscriminatorType.INTEGER)
 public class ProductAttributeEntity extends AbstractBaseEntity

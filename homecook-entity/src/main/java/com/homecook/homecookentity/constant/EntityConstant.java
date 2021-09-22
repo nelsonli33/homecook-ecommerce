@@ -13,6 +13,7 @@ public interface EntityConstant
         String ProductAttributeCategory = _Prefix + "product_attribute_category";
         String ProductAttribute = _Prefix + "product_attribute";
         String ProductAttributeValue = _Prefix + "product_attribute_value";
+        String Product2Category = _Prefix + "product_category_rel";
 
     }
 }

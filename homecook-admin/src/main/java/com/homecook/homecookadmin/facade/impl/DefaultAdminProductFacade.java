@@ -1,10 +1,14 @@
 package com.homecook.homecookadmin.facade.impl;
 
 import com.google.cloud.storage.Blob;
+import com.homecook.homecookadmin.dto.ProductDTO;
 import com.homecook.homecookadmin.dto.ProductImageDTO;
 import com.homecook.homecookadmin.facade.AdminProductFacade;
+import com.homecook.homecookadmin.facade.mapper.AdminProductImageMapper;
+import com.homecook.homecookadmin.facade.mapper.AdminProductMapper;
 import com.homecook.homecookadmin.service.AdminProductImageService;
-import com.homecook.homecookcommon.converter.Converter;
+import com.homecook.homecookadmin.service.AdminProductService;
+import com.homecook.homecookentity.entity.ProductEntity;
 import com.homecook.homecookentity.entity.ProductImageEntity;
 import com.homecook.homecookentity.service.ModelService;
 import org.slf4j.Logger;
@@ -24,20 +28,34 @@ public class DefaultAdminProductFacade implements AdminProductFacade
     private static final Logger log = LoggerFactory.getLogger(DefaultAdminProductFacade.class);
 
     private AdminProductImageService adminProductImageService;
-    private Converter<ProductImageEntity, ProductImageDTO> adminProductImageConverter;
+    private AdminProductService adminProductService;
     private ModelService modelService;
+    private AdminProductImageMapper adminProductImageMapper;
+    private AdminProductMapper adminProductMapper;
+
 
     @Autowired
     public DefaultAdminProductFacade(
             @Qualifier(value = "adminProductImageService") AdminProductImageService adminProductImageService,
+            @Qualifier(value = "adminProductService") AdminProductService adminProductService,
             @Qualifier(value = "modelService") ModelService modelService,
-            @Qualifier(value = "adminProductImageConverter") Converter<ProductImageEntity, ProductImageDTO> adminProductImageConverter
+            @Autowired AdminProductImageMapper adminProductImageMapper,
+            @Autowired AdminProductMapper adminProductMapper
     )
     {
         this.adminProductImageService = adminProductImageService;
-        this.adminProductImageConverter = adminProductImageConverter;
+        this.adminProductService = adminProductService;
         this.modelService = modelService;
+        this.adminProductImageMapper = adminProductImageMapper;
+        this.adminProductMapper = adminProductMapper;
     }
+
+    public ProductDTO createProduct(ProductDTO productDTO) {
+        ProductEntity productEntity = adminProductMapper.convertToProductEntity(productDTO);
+        getModelService().save(productEntity);
+        return adminProductMapper.convertToProductDTO(productEntity);
+    }
+
 
     public ProductImageDTO uploadProductImage(MultipartFile file) {
         final List<Blob> blobs =
@@ -63,7 +81,7 @@ public class DefaultAdminProductFacade implements AdminProductFacade
             entity.setThumbnail(blobs.get(3).getName());
 
             modelService.save(entity);
-            productImageDTO = adminProductImageConverter.convert(entity);
+            productImageDTO = adminProductImageMapper.convertToProductImageDTO(entity);
         }
         return productImageDTO;
     }

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
@@ -21,15 +22,11 @@ public class AdminCategoryController
 {
     private static final Logger log = LoggerFactory.getLogger(AdminCategoryController.class);
 
+    @Resource(name = "adminCategoryFacade")
     private AdminCategoryFacade adminCategoryFacade;
-    private CategoryRestMapper categoryRestMapper;
 
     @Autowired
-    public AdminCategoryController(AdminCategoryFacade adminCategoryFacade, CategoryRestMapper categoryRestMapper)
-    {
-        this.adminCategoryFacade = adminCategoryFacade;
-        this.categoryRestMapper = categoryRestMapper;
-    }
+    private CategoryRestMapper categoryRestMapper;
 
     @GetMapping
     public ResponseEntity<List<Category>> listCategories() {

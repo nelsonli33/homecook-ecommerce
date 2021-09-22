@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface AdminCategoryService
 {
-    List<CategoryEntity> listCategories();
+    List<CategoryEntity> getCategories();
 
-    List<CategoryEntity> listCategoriesForIds(List<Long> ids);
+    List<CategoryEntity> getCategoriesForIds(List<Long> ids);
 
     CategoryEntity getCategoryForId(Long id);
 

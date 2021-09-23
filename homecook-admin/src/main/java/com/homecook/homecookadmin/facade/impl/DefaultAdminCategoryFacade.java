@@ -39,7 +39,7 @@ public class DefaultAdminCategoryFacade implements AdminCategoryFacade
     }
 
     @Override
-    public CategoryDTO getCategoryForId(Long id)
+    public CategoryDTO getCategoryDetail(Long id)
     {
         return adminCategoryMapper.convertToDTO(adminCategoryService.getCategoryForId(id));
     }

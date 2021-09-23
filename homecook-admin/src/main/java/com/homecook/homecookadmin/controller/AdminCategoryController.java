@@ -40,7 +40,7 @@ public class AdminCategoryController
 
     @GetMapping("/{categoryId}")
     public ResponseEntity<Category> getCategoryDetail(@PathVariable("categoryId") Long categoryId) {
-        CategoryDTO categoryDTO = adminCategoryFacade.getCategoryForId(categoryId);
+        CategoryDTO categoryDTO = adminCategoryFacade.getCategoryDetail(categoryId);
         final Category category = categoryRestMapper.convertDTOtoResponse(categoryDTO);
         return ResponseEntity
                 .status(HttpStatus.OK)

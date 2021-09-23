@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service(value = "adminCategoryService")
-public class DefaultAdminCategoryService implements AdminCategoryService
+public class DefaultAdminCategoryService extends AbstractBaseService implements AdminCategoryService
 {
     private CategoryRepository categoryRepository;
 

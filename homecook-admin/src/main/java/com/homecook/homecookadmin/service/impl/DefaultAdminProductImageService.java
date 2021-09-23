@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Service(value = "adminProductImageService")
-public class DefaultAdminProductImageService implements AdminProductImageService
+public class DefaultAdminProductImageService extends AbstractBaseService implements AdminProductImageService
 {
 
     private static final Logger log = LoggerFactory.getLogger(DefaultAdminProductImageService.class);

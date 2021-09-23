@@ -8,7 +8,7 @@ public interface AdminCategoryFacade
 {
     List<CategoryDTO> getAllCategories();
 
-    CategoryDTO getCategoryForId(Long id);
+    CategoryDTO getCategoryDetail(Long id);
 
     CategoryDTO createCategory(CategoryDTO categoryDTO);
 

@@ -20,14 +20,14 @@ public class CategoryEntity extends AbstractBaseEntity
     private Long parentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "parent_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private CategoryEntity parent;
 
     @OneToMany(cascade= CascadeType.ALL, mappedBy="parent")
     private Set<CategoryEntity> children = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "attribute_category_id")
+    @JoinColumn(name = "attribute_category_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private ProductAttributeCategoryEntity attributeCategory;
 
     @ManyToMany(mappedBy = "categories")

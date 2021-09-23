@@ -11,7 +11,7 @@ public class ProductAttributeValueEntity extends AbstractBaseEntity
     private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "attribute_id")
+    @JoinColumn(name = "attribute_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private ProductAttributeEntity attribute;
 
     public String getValue()

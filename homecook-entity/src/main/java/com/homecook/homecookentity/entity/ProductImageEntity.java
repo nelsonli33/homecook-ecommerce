@@ -23,7 +23,7 @@ public class ProductImageEntity extends AbstractBaseEntity
     private String zoom;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private ProductEntity product;
 
     @OneToMany(mappedBy = "image")

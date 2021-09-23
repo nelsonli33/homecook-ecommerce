@@ -10,44 +10,33 @@ import javax.persistence.*;
 @DynamicUpdate
 public class ProductVariantEntity extends AbstractBaseEntity
 {
-    private String name;
     @Column(columnDefinition = "DECIMAL(10,2)")
     private Double price;
     private Integer quantity;
     private String sku;
     private Integer sortOrder;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "spec_value1_id")
-    private ProductAttributeValueEntity specValue1;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "spec_value2_id")
-    private ProductAttributeValueEntity specValue2;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "spec_value3_id")
-    private ProductAttributeValueEntity specValue3;
-
     @ManyToOne(fetch = FetchType.LAZY)
-
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private ProductEntity product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id")
+    @JoinColumn(name = "image_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private ProductImageEntity image;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "spec_value1_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private ProductAttributeValueEntity specValue1;
 
-    public String getName()
-    {
-        return name;
-    }
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "spec_value2_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private ProductAttributeValueEntity specValue2;
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "spec_value3_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private ProductAttributeValueEntity specValue3;
+
+
 
     public Double getPrice()
     {

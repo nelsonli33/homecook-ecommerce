@@ -3,6 +3,7 @@ package com.homecook.homecookentity.entity;
 import com.homecook.homecookentity.constant.EntityConstant;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,10 +16,10 @@ public class ProductAttributeEntity extends AbstractBaseEntity
     private Integer sortOrder;
 
     @OneToMany(mappedBy = "attribute", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductAttributeValueEntity> attrValues;
+    private List<ProductAttributeValueEntity> attrValues = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private ProductEntity product;
 
     public ProductEntity getProduct()

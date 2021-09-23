@@ -11,4 +11,6 @@ public interface ModelService
     void saveAll(Collection<? extends AbstractBaseEntity> models);
 
     void remove(AbstractBaseEntity model);
+
+    void removeAll(Iterable<? extends AbstractBaseEntity> models);
 }

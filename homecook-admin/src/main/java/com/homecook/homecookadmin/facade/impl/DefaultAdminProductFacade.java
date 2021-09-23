@@ -1,20 +1,22 @@
 package com.homecook.homecookadmin.facade.impl;
 
 import com.google.cloud.storage.Blob;
-import com.homecook.homecookadmin.dto.ProductDTO;
-import com.homecook.homecookadmin.dto.ProductImageDTO;
+import com.homecook.homecookadmin.dto.*;
 import com.homecook.homecookadmin.facade.AdminProductFacade;
 import com.homecook.homecookadmin.facade.mapper.AdminProductImageMapper;
 import com.homecook.homecookadmin.facade.mapper.AdminProductMapper;
+import com.homecook.homecookadmin.facade.mapper.AdminProductSpecMapper;
 import com.homecook.homecookadmin.service.AdminProductImageService;
 import com.homecook.homecookadmin.service.AdminProductService;
 import com.homecook.homecookentity.entity.ProductEntity;
 import com.homecook.homecookentity.entity.ProductImageEntity;
+import com.homecook.homecookentity.entity.ProductSpecAttributeEntity;
 import com.homecook.homecookentity.service.ModelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,6 +34,7 @@ public class DefaultAdminProductFacade implements AdminProductFacade
     private ModelService modelService;
     private AdminProductImageMapper adminProductImageMapper;
     private AdminProductMapper adminProductMapper;
+    private AdminProductSpecMapper adminProductSpecMapper;
 
 
     @Autowired
@@ -40,7 +43,8 @@ public class DefaultAdminProductFacade implements AdminProductFacade
             @Qualifier(value = "adminProductService") AdminProductService adminProductService,
             @Qualifier(value = "modelService") ModelService modelService,
             @Autowired AdminProductImageMapper adminProductImageMapper,
-            @Autowired AdminProductMapper adminProductMapper
+            @Autowired AdminProductMapper adminProductMapper,
+            @Autowired AdminProductSpecMapper adminProductSpecMapper
     )
     {
         this.adminProductImageService = adminProductImageService;
@@ -48,15 +52,88 @@ public class DefaultAdminProductFacade implements AdminProductFacade
         this.modelService = modelService;
         this.adminProductImageMapper = adminProductImageMapper;
         this.adminProductMapper = adminProductMapper;
+        this.adminProductSpecMapper = adminProductSpecMapper;
     }
 
+    @Override
+    public PageDTO<ProductDTO> getProducts(ProductSearchCriteria productSearchCriteria)
+    {
+        final Page<ProductEntity> products = adminProductService.getProducts(productSearchCriteria);
+
+        PageDTO<ProductDTO> productPageDTO = new PageDTO<>();
+        productPageDTO.setTotal(products.getNumberOfElements());
+        productPageDTO.setCurrentPage(productSearchCriteria.getPage());
+        productPageDTO.setPageSize(productSearchCriteria.getLimit());
+        productPageDTO.setPageCount(products.getTotalPages());
+        productPageDTO.setResult(adminProductMapper.convertAllToProductDTO(products.getContent()));
+
+        return productPageDTO;
+    }
+
+    @Override
+    public ProductDTO getProductDetail(Long productId) {
+        return adminProductMapper.convertToProductDTO(adminProductService.getProductForId(productId));
+    }
+
+    @Override
     public ProductDTO createProduct(ProductDTO productDTO) {
         ProductEntity productEntity = adminProductMapper.convertToProductEntity(productDTO);
         getModelService().save(productEntity);
         return adminProductMapper.convertToProductDTO(productEntity);
     }
 
+    @Override
+    public ProductDTO updateProduct(Long productId, ProductDTO productDTO)
+    {
+        ProductEntity productEntity = adminProductService.getProductForId(productId);
+        adminProductMapper.populateToProductEntity(productDTO, productEntity);
+        getModelService().save(productEntity);
+        return adminProductMapper.convertToProductDTO(productEntity);
+    }
 
+    @Override
+    public void deleteProduct(Long productId)
+    {
+        ProductEntity product = adminProductService.getProductForId(productId);
+        getModelService().remove(product);
+    }
+
+    @Override
+    public List<ProductSpecDTO> getProductSpecs(Long productId)
+    {
+        ProductEntity productEntity = adminProductService.getProductForId(productId);
+        return adminProductSpecMapper.convertAllToProdutSpecDTOs(productEntity.getSpecs());
+    }
+
+    @Override
+    public ProductSpecDTO getProductSpecDetail(Long productId, Long specId)
+    {
+        final ProductEntity productEntity = adminProductService.getProductForId(productId);
+        final ProductSpecAttributeEntity productSpecAttributeEntity =
+                adminProductService.getProductSpecAttribute(specId, productEntity);
+        return adminProductSpecMapper.convertToProductSpecDTO(productSpecAttributeEntity);
+    }
+
+    @Override
+    public ProductSpecDTO updateProductSpec(Long productId, Long specId, ProductSpecDTO productSpecDTO)
+    {
+        final ProductEntity productEntity = adminProductService.getProductForId(productId);
+        final ProductSpecAttributeEntity productSpecAttributeEntity =
+                adminProductService.getProductSpecAttribute(specId, productEntity);
+        adminProductSpecMapper.populateToProductSpecAttributeEntity(productSpecDTO, productSpecAttributeEntity);
+        getModelService().save(productSpecAttributeEntity);
+        return adminProductSpecMapper.convertToProductSpecDTO(productSpecAttributeEntity);
+    }
+
+
+    @Override
+    public void deleteAllProductSpecsAndVariants(Long productId) {
+        final ProductEntity productEntity = adminProductService.getProductForId(productId);
+        adminProductService.deleteAllProductSpecsAndVariantsForProduct(productEntity);
+    }
+
+
+    @Override
     public ProductImageDTO uploadProductImage(MultipartFile file) {
         final List<Blob> blobs =
                 adminProductImageService.uploadProductImage(file);

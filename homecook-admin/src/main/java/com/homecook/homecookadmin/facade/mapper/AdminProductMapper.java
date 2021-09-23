@@ -26,8 +26,8 @@ public abstract class AdminProductMapper
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(source = "categoryIds", target = "categories", qualifiedByName = "addProductCategories"),
-            @Mapping(target = "specs", ignore = true),
-            @Mapping(target = "variants", ignore = true)
+            @Mapping(target = "specs", ignore = true), // This is now mapped in AfterMapping
+            @Mapping(target = "variants", ignore = true) // This is now mapped in AfterMapping
     })
     public abstract ProductEntity convertToProductEntity(ProductDTO productDTO);
 
@@ -53,26 +53,51 @@ public abstract class AdminProductMapper
             int specOrder = 1;
 
             for(ProductSpecDTO specDTO : specDTOs) {
-                ProductSpecAttributeEntity specAttributeEntity = new ProductSpecAttributeEntity();
-                specAttributeEntity.setName(specDTO.getName());
+                ProductSpecAttributeEntity specAttributeEntity;
+
+                if (specDTO.getId() != null) {
+                    specAttributeEntity = adminProductService.getProductSpecAttribute(specDTO.getId(), productEntity);
+                } else {
+                    specAttributeEntity = new ProductSpecAttributeEntity();
+                }
+
+                if (specDTO.getName() != null) {
+                    specAttributeEntity.setName(specDTO.getName());
+                }
+
                 specAttributeEntity.setSortOrder(specOrder++);
                 specAttributeEntity.setProduct(productEntity);
 
-                List<ProductAttributeValueEntity> attributeValueEntities = new ArrayList<>();
+
                 List<ProductSpecValueDTO> specValues = specDTO.getValues();
-                for(ProductSpecValueDTO specValueDTO: specValues) {
-                    ProductAttributeValueEntity attributeValueEntity = new ProductAttributeValueEntity();
-                    attributeValueEntity.setValue(specValueDTO.getValue());
-                    attributeValueEntity.setAttribute(specAttributeEntity);
+                if (CollectionUtils.isNotEmpty(specValues)) {
 
-                    attributeValueEntities.add(attributeValueEntity);
+                    List<ProductAttributeValueEntity> attributeValueEntities = new ArrayList<>();
+
+                    for(ProductSpecValueDTO specValueDTO: specValues) {
+                        ProductAttributeValueEntity attributeValueEntity;
+
+                        if (specValueDTO.getId() != null) {
+                            attributeValueEntity =  adminProductService.getProductAttributeValue(specValueDTO.getId(), specAttributeEntity);
+                        } else {
+                            attributeValueEntity = new ProductAttributeValueEntity();
+                        }
+
+                        if (specValueDTO.getValue() != null) {
+                            attributeValueEntity.setValue(specValueDTO.getValue());
+                        }
+                        attributeValueEntity.setAttribute(specAttributeEntity);
+
+                        attributeValueEntities.add(attributeValueEntity);
+                    }
+
+                    specAttributeEntity.getAttrValues().clear();
+                    specAttributeEntity.getAttrValues().addAll(attributeValueEntities);
+                    specAttributeEntities.add(specAttributeEntity);
                 }
-
-                specAttributeEntity.setAttrValues(attributeValueEntities);
-                specAttributeEntities.add(specAttributeEntity);
             }
-
-            productEntity.setSpecs(specAttributeEntities);
+            productEntity.getSpecs().clear();
+            productEntity.getSpecs().addAll(specAttributeEntities);
         }
     }
 
@@ -80,6 +105,10 @@ public abstract class AdminProductMapper
     protected void addProductVariantsForProduct(ProductDTO productDTO, @MappingTarget ProductEntity productEntity)
     {
         List<ProductVariantDTO> variantDTOs = productDTO.getVariants();
+        if (CollectionUtils.isEmpty(variantDTOs)) {
+            return;
+        }
+
         Map<String, ProductAttributeValueEntity> attrValueMap = new HashMap<>();
         for (int i = 0; i < productEntity.getSpecs().size(); i++)
         {
@@ -101,21 +130,39 @@ public abstract class AdminProductMapper
             else
             {
                 productVariantEntity = new ProductVariantEntity();
-            }
-            productVariantEntity.setName(productVariantDTO.getName());
-            productVariantEntity.setPrice(productVariantDTO.getPrice().doubleValue());
-            productVariantEntity.setQuantity(productVariantDTO.getQuantity());
-            productVariantEntity.setSku(productVariantDTO.getSku());
-            productVariantEntity.setSpecValue1(attrValueMap.get(productVariantDTO.getSpecValue1()));
-            productVariantEntity.setSpecValue2(attrValueMap.get(productVariantDTO.getSpecValue2()));
-            productVariantEntity.setSpecValue3(attrValueMap.get(productVariantDTO.getSpecValue3()));
-            productVariantEntity.setProduct(productEntity);
 
+                if (productVariantDTO.getSpecValue1() != null) {
+                    productVariantEntity.setSpecValue1(attrValueMap.get(productVariantDTO.getSpecValue1()));
+                }
+                if (productVariantDTO.getSpecValue2() != null) {
+                    productVariantEntity.setSpecValue2(attrValueMap.get(productVariantDTO.getSpecValue2()));
+                }
+                if (productVariantDTO.getSpecValue3() != null) {
+                    productVariantEntity.setSpecValue3(attrValueMap.get(productVariantDTO.getSpecValue3()));
+                }
+            }
+
+            if (productVariantDTO.getPrice() != null) {
+                productVariantEntity.setPrice(productVariantDTO.getPrice().doubleValue());
+            }
+            if (productVariantDTO.getQuantity() != null) {
+                productVariantEntity.setQuantity(productVariantDTO.getQuantity());
+            }
+            if (productVariantDTO.getSku() != null) {
+                productVariantEntity.setSku(productVariantDTO.getSku());
+            }
+
+            productVariantEntity.setProduct(productEntity);
             productVariantEntities.add(productVariantEntity);
         }
 
-        productEntity.setVariants(productVariantEntities);
+        productEntity.getVariants().clear();
+        productEntity.getVariants().addAll(productVariantEntities);
     }
+
+    @InheritConfiguration
+    public abstract void populateToProductEntity(ProductDTO productDTO, @MappingTarget ProductEntity productEntity);
+
 
     protected ProductStatusType getProductStatusTypeForValue(Integer value) {
         return ProductStatusType.valueOf(value);
@@ -126,8 +173,9 @@ public abstract class AdminProductMapper
     }
 
 
-
     public abstract ProductDTO convertToProductDTO(ProductEntity productEntity);
+
+    public abstract List<ProductDTO> convertAllToProductDTO(List<ProductEntity> productEntities);
 
     @Mappings({
             @Mapping(target = "sortOrder", ignore = true),
@@ -140,10 +188,10 @@ public abstract class AdminProductMapper
     public abstract ProductSpecDTO convertToProductSpecDTO(ProductSpecAttributeEntity attributeEntity);
 
     @AfterMapping
-    protected void addProductSpecAttributeValue(ProductSpecAttributeEntity source, @MappingTarget ProductSpecDTO target) {
+    protected void addProductSpecAttributeValue(ProductSpecAttributeEntity attributeEntity, @MappingTarget ProductSpecDTO target) {
         List<ProductSpecValueDTO> specValueDTOs = new ArrayList<>();
 
-        for(ProductAttributeValueEntity attributeValueEntity : source.getAttrValues()) {
+        for(ProductAttributeValueEntity attributeValueEntity : attributeEntity.getAttrValues()) {
             ProductSpecValueDTO specValueDTO = new ProductSpecValueDTO();
             specValueDTO.setId(attributeValueEntity.getId());
             specValueDTO.setValue(attributeValueEntity.getValue());
@@ -153,6 +201,7 @@ public abstract class AdminProductMapper
     }
 
     @Mappings({
+            @Mapping(source = "productVariantEntity", target = "name", qualifiedByName = "variantName"),
             @Mapping(source = "specValue1.id", target = "specValue1Id"),
             @Mapping(source = "specValue1.value", target = "specValue1"),
             @Mapping(source = "specValue2.id", target = "specValue2Id"),
@@ -163,9 +212,25 @@ public abstract class AdminProductMapper
     public abstract ProductVariantDTO convertToProductVariantDTO(ProductVariantEntity productVariantEntity);
 
 
+    @Named("variantName")
+    public String getVariantName(ProductVariantEntity productVariantEntity) {
+        StringBuilder builder = new StringBuilder();
 
+        ProductAttributeValueEntity specValue1 = productVariantEntity.getSpecValue1();
+        if (specValue1 != null) {
+            builder.append(specValue1.getValue());
+        }
+        ProductAttributeValueEntity specValue2 = productVariantEntity.getSpecValue2();
+        if (specValue2 != null) {
+            builder.append(",").append(specValue2.getValue());
+        }
+        ProductAttributeValueEntity specValue3 = productVariantEntity.getSpecValue3();
+        if (specValue3 != null) {
+            builder.append(",").append(specValue3.getValue());
+        }
 
-
+        return builder.toString();
+    }
 
     public AdminCategoryService getAdminCategoryService()
     {

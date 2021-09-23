@@ -20,6 +20,7 @@ target/
 *.ipr
 out
 gen
+rebel.xml
 
 ### NetBeans ###
 /nbproject/private/

@@ -38,4 +38,10 @@ public class DefaultModelService implements ModelService
     {
         modelRepository.delete(model);
     }
+
+    @Override
+    public void removeAll(Iterable<? extends AbstractBaseEntity> models)
+    {
+        modelRepository.deleteAll(models);
+    }
 }

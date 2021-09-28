@@ -27,6 +27,9 @@ public class CreateProductRequest {
 	@JsonProperty("categoryIds")
 	private List<Long> categoryIds;
 
+	@JsonProperty("imageIds")
+	private List<Long> productImageIds;
+
 	@JsonProperty("minOrderQuantity")
 	private Integer minOrderQuantity;
 
@@ -38,9 +41,6 @@ public class CreateProductRequest {
 
 	@JsonProperty("daysToShip")
 	private Integer daysToShip;
-
-	@JsonProperty("imageIds")
-	private List<Long> imageIds;
 
 	@JsonProperty("status")
 	private Integer status;
@@ -102,6 +102,16 @@ public class CreateProductRequest {
 		this.categoryIds = categoryIds;
 	}
 
+	public List<Long> getProductImageIds()
+	{
+		return productImageIds;
+	}
+
+	public void setProductImageIds(List<Long> productImageIds)
+	{
+		this.productImageIds = productImageIds;
+	}
+
 	public Integer getMinOrderQuantity()
 	{
 		return minOrderQuantity;
@@ -142,15 +152,7 @@ public class CreateProductRequest {
 		this.daysToShip = daysToShip;
 	}
 
-	public List<Long> getImageIds()
-	{
-		return imageIds;
-	}
 
-	public void setImageIds(List<Long> imageIds)
-	{
-		this.imageIds = imageIds;
-	}
 
 	public Integer getStatus()
 	{

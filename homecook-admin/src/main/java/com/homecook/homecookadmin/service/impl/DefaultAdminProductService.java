@@ -40,7 +40,6 @@ public class DefaultAdminProductService extends AbstractBaseService implements A
         this.productSpecAttributeRepository = productSpecAttributeRepository;
     }
 
-
     @Override
     public Page<ProductEntity> getProducts(ProductSearchCriteria searchCriteria)
     {

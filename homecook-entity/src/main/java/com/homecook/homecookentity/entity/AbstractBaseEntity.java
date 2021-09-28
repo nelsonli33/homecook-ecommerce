@@ -1,11 +1,13 @@
 package com.homecook.homecookentity.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
 
+@DynamicUpdate
 @MappedSuperclass
 public class AbstractBaseEntity
 {

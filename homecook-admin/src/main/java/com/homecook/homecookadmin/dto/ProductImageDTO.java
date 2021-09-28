@@ -2,23 +2,27 @@ package com.homecook.homecookadmin.dto;
 
 public class ProductImageDTO
 {
-    private String code;
+    private Long id;
     private String filename;
     private String originfilename;
     private String thumbnail;
     private String normal;
     private String detail;
     private String zoom;
-    private Integer position;
+    private String thumbnailUrl;
+    private String normalUrl;
+    private String detailUrl;
+    private String zoomUrl;
+    private Integer sortOrder;
 
-    public String getCode()
+    public Long getId()
     {
-        return code;
+        return id;
     }
 
-    public void setCode(String code)
+    public void setId(Long id)
     {
-        this.code = code;
+        this.id = id;
     }
 
     public String getFilename()
@@ -81,13 +85,53 @@ public class ProductImageDTO
         this.zoom = zoom;
     }
 
-    public Integer getPosition()
+    public String getThumbnailUrl()
     {
-        return position;
+        return thumbnailUrl;
     }
 
-    public void setPosition(Integer position)
+    public void setThumbnailUrl(String thumbnailUrl)
     {
-        this.position = position;
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public String getNormalUrl()
+    {
+        return normalUrl;
+    }
+
+    public void setNormalUrl(String normalUrl)
+    {
+        this.normalUrl = normalUrl;
+    }
+
+    public String getDetailUrl()
+    {
+        return detailUrl;
+    }
+
+    public void setDetailUrl(String detailUrl)
+    {
+        this.detailUrl = detailUrl;
+    }
+
+    public String getZoomUrl()
+    {
+        return zoomUrl;
+    }
+
+    public void setZoomUrl(String zoomUrl)
+    {
+        this.zoomUrl = zoomUrl;
+    }
+
+    public Integer getSortOrder()
+    {
+        return sortOrder;
+    }
+
+    public void setSortOrder(Integer sortOrder)
+    {
+        this.sortOrder = sortOrder;
     }
 }

@@ -45,8 +45,9 @@ public class ProductEntity extends AbstractBaseEntity
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductVariantEntity> variants = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<ProductImageEntity> images;
+    @OneToMany(mappedBy = "product")
+    @OrderBy("sortOrder ASC")
+    private List<ProductImageEntity> images = new ArrayList<>();
 
     public String getName()
     {

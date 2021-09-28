@@ -15,7 +15,8 @@ import java.util.stream.Collectors;
 
 @Mapper(
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        componentModel = "spring"
+        componentModel = "spring",
+        uses = { ProductImageRestMapper.class }
 )
 public interface ProductRestMapper
 {
@@ -34,7 +35,6 @@ public interface ProductRestMapper
             @Mapping(target = "variants.name", ignore = true),
     })
     ProductDTO convertRequestToDTO(UpdateProductRequest updateProductRequest);
-
 
     Product convertDTOtoResponse(ProductDTO productDTO);
 

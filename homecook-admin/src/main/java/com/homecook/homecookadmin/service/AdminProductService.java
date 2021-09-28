@@ -19,5 +19,8 @@ public interface AdminProductService
 
     ProductVariantEntity getProductVariantForId(Long variantId);
 
+
+
+
     void deleteAllProductSpecsAndVariantsForProduct(ProductEntity productEntity);
 }

@@ -1,26 +1,20 @@
 package com.homecook.homecookentity.entity;
 
-import com.homecook.homecookentity.constant.EntityConstant;
-
 import javax.persistence.*;
 import java.util.List;
 
 
-@Table(name = EntityConstant.Table.ProductImage, indexes = {
-        @Index(name = "idx_productimagemodel_code", columnList = "code")
-})
+
 @Entity
 public class ProductImageEntity extends AbstractBaseEntity
 {
     @Column(nullable = false, unique = true)
-    private String code;
     private String filename;
     private String originfilename;
-    private Integer position;
+    private Integer sortOrder;
     private String thumbnail;
     private String normal;
     private String detail;
-    private String zoom;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
@@ -28,16 +22,6 @@ public class ProductImageEntity extends AbstractBaseEntity
 
     @OneToMany(mappedBy = "image")
     private List<ProductVariantEntity> variants;
-
-    public String getCode()
-    {
-        return code;
-    }
-
-    public void setCode(String code)
-    {
-        this.code = code;
-    }
 
     public String getFilename()
     {
@@ -59,14 +43,14 @@ public class ProductImageEntity extends AbstractBaseEntity
         this.originfilename = originfilename;
     }
 
-    public Integer getPosition()
+    public Integer getSortOrder()
     {
-        return position;
+        return sortOrder;
     }
 
-    public void setPosition(Integer position)
+    public void setSortOrder(Integer sortOrder)
     {
-        this.position = position;
+        this.sortOrder = sortOrder;
     }
 
     public String getThumbnail()
@@ -97,16 +81,6 @@ public class ProductImageEntity extends AbstractBaseEntity
     public void setDetail(String detail)
     {
         this.detail = detail;
-    }
-
-    public String getZoom()
-    {
-        return zoom;
-    }
-
-    public void setZoom(String zoom)
-    {
-        this.zoom = zoom;
     }
 
     public ProductEntity getProduct()

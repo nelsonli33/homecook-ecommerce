@@ -26,6 +26,9 @@ public class Product
     @JsonProperty("categories")
     private List<Category> categories;
 
+    @JsonProperty("images")
+    private List<ProductImage> images;
+
     @JsonProperty("minOrderQuantity")
     private Integer minOrderQuantity;
 
@@ -41,9 +44,11 @@ public class Product
     @JsonProperty("status")
     private Integer status;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JsonProperty("variants")
     private List<ProductVariant> variants;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JsonProperty("specs")
     private List<ProductSpec> specs;
 
@@ -107,6 +112,16 @@ public class Product
     public void setCategories(List<Category> categories)
     {
         this.categories = categories;
+    }
+
+    public List<ProductImage> getImages()
+    {
+        return images;
+    }
+
+    public void setImages(List<ProductImage> images)
+    {
+        this.images = images;
     }
 
     public Integer getMinOrderQuantity()

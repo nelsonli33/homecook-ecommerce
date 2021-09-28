@@ -17,6 +17,18 @@ public interface AdminProductFacade
 
     void deleteProduct(Long productId);
 
+    List<ProductImageDTO> getProductImages(Long productId);
+
+    ProductImageDTO getProductImageDetail(Long productId, Long productImageId);
+
+    ProductImageDTO createProductImage(Long productId, UploadProductImageDTO uploadProductImageDTO);
+
+    ProductImageDTO createProductImage(Long productId, MultipartFile file);
+
+    ProductImageDTO uploadProductImage(MultipartFile file);
+
+    void deleteProductImage(Long productId, Long productImageId);
+
     List<ProductSpecDTO> getProductSpecs(Long productId);
 
     ProductSpecDTO getProductSpecDetail(Long productId, Long specId);
@@ -25,5 +37,5 @@ public interface AdminProductFacade
 
     void deleteAllProductSpecsAndVariants(Long productId);
 
-    ProductImageDTO uploadProductImage(MultipartFile file);
+
 }

@@ -19,7 +19,9 @@ public class ProductDTO
     private String metaTitle;
     private String metaDescription;
     private List<Long> categoryIds;
+    private List<Long> productImageIds;
     private List<CategoryDTO> categories;
+    private List<ProductImageDTO> images;
     private List<ProductSpecDTO> specs;
     private List<ProductVariantDTO> variants;
 
@@ -161,6 +163,26 @@ public class ProductDTO
     public void setCategoryIds(List<Long> categoryIds)
     {
         this.categoryIds = categoryIds;
+    }
+
+    public List<Long> getProductImageIds()
+    {
+        return productImageIds;
+    }
+
+    public void setProductImageIds(List<Long> productImageIds)
+    {
+        this.productImageIds = productImageIds;
+    }
+
+    public List<ProductImageDTO> getImages()
+    {
+        return images;
+    }
+
+    public void setImages(List<ProductImageDTO> images)
+    {
+        this.images = images;
     }
 
     public List<CategoryDTO> getCategories()

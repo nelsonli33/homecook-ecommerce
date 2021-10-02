@@ -13,6 +13,21 @@ CREATE TABLE comm_category
     CONSTRAINT pk_comm_category PRIMARY KEY (id)
 );
 
+CREATE TABLE comm_customer
+(
+    id         BIGINT AUTO_INCREMENT NOT NULL,
+    created_at datetime              NOT NULL,
+    updated_at datetime              NULL,
+    version    INT                   NULL,
+    name       VARCHAR(255)          NULL,
+    account    VARCHAR(255)          NOT NULL,
+    password   VARCHAR(255)          NULL,
+    email      VARCHAR(255)          NULL,
+    phone      VARCHAR(255)          NULL,
+    birthday   date                  NULL,
+    CONSTRAINT pk_comm_customer PRIMARY KEY (id)
+);
+
 CREATE TABLE comm_product
 (
     id                 BIGINT AUTO_INCREMENT NOT NULL,
@@ -112,6 +127,15 @@ CREATE TABLE product_image_entity
     product_id     BIGINT                NULL,
     CONSTRAINT pk_productimageentity PRIMARY KEY (id)
 );
+
+ALTER TABLE comm_customer
+    ADD CONSTRAINT uc_comm_customer_account UNIQUE (account);
+
+ALTER TABLE comm_customer
+    ADD CONSTRAINT uc_comm_customer_email UNIQUE (email);
+
+ALTER TABLE comm_customer
+    ADD CONSTRAINT uc_comm_customer_phone UNIQUE (phone);
 
 ALTER TABLE product_image_entity
     ADD CONSTRAINT uc_productimageentity_filename UNIQUE (filename);

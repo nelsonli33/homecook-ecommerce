@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,12 +37,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
             log.error("cause::stack trace: ", cause);
         }
 
-        final List<Error> errors = ex.getError().getAllErrors().stream().map(e -> {
-            Error error = new Error();
-            error.setField(((FieldError) e).getField());
-            error.setMessage(e.getDefaultMessage());
-            return error;
-        }).collect(Collectors.toList());
+        List<Error> errors = new ArrayList<>();
+        if (ex.getError() != null)
+        {
+            errors = ex.getError().getAllErrors().stream().map(e -> {
+                Error error = new Error();
+                error.setField(((FieldError) e).getField());
+                error.setMessage(e.getDefaultMessage());
+                return error;
+            }).collect(Collectors.toList());
+        }
+
 
         ServerResponse serverResponse = ServerResponse.builder()
                 .setCode(ex.getErrorCode().getCode())

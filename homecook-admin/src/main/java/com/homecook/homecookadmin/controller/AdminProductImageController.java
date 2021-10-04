@@ -55,6 +55,21 @@ public class AdminProductImageController
         return ResponseEntity.status(HttpStatus.OK).body(productImage);
     }
 
+    @PostMapping(value = "/images/upload")
+    public ResponseEntity<ProductImage> productImageUpload(@RequestParam("file") MultipartFile file)
+    {
+        if (file.isEmpty())
+        {
+            throw new HomecookAdminRuntimeException(InternalErrorCode.PRODUCT_IMAGE_UPLOAD_ERROR, "Failed to upload empty file.");
+        }
+
+        FileUtil.checkValidImageFile(file);
+
+        final ProductImageDTO productImageData = adminProductFacade.uploadProductImage(file);
+        final ProductImage productImage = productImageRestMapper.convertDTOtoResponse(productImageData);
+        return ResponseEntity.status(HttpStatus.OK).body(productImage);
+    }
+
     @PostMapping(value = "/{productId}/images", consumes = "application/json")
     public ResponseEntity<ProductImage> createProductImageForUrl(
             @PathVariable("productId") Long productId,
@@ -90,18 +105,5 @@ public class AdminProductImageController
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
-    @PostMapping(value = "/products/images/upload")
-    public ResponseEntity<ProductImage> productImageUpload(@RequestParam("file") MultipartFile file)
-    {
-        if (file.isEmpty())
-        {
-            throw new HomecookAdminRuntimeException(InternalErrorCode.PRODUCT_IMAGE_UPLOAD_ERROR, "Failed to upload empty file.");
-        }
 
-        FileUtil.checkValidImageFile(file);
-
-        final ProductImageDTO productImageData = adminProductFacade.uploadProductImage(file);
-        final ProductImage productImage = productImageRestMapper.convertDTOtoResponse(productImageData);
-        return ResponseEntity.status(HttpStatus.OK).body(productImage);
-    }
 }

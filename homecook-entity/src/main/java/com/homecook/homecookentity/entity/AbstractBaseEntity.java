@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @DynamicUpdate
 @MappedSuperclass
@@ -68,4 +69,19 @@ public class AbstractBaseEntity
         this.version = version;
     }
 
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (!(o instanceof AbstractBaseEntity)) return false;
+        AbstractBaseEntity that = (AbstractBaseEntity) o;
+        return getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getId());
+    }
 }

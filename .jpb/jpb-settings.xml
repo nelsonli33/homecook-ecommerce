@@ -4,16 +4,20 @@
     <exclude-change idName="FK_COMM_CATEGORY_ON_ATTRIBUTE_CATEGORY" tagName="addForeignKeyConstraint" />
     <exclude-change idName="FK_COMM_CATEGORY_ON_PARENT" tagName="addForeignKeyConstraint" />
     <exclude-change idName="FK_COMM_PRODUCT_ATTRIBUTE_ON_PRODUCT" tagName="addForeignKeyConstraint" />
-    <exclude-change idName="FK_COMM_PRODUCT_ATTRIBUTE_VALUE_ON_ATTRIBUTE" tagName="addForeignKeyConstraint" />
-    <exclude-change idName="FK_COMM_PRODUCT_IMAGE_ON_PRODUCT" tagName="addForeignKeyConstraint" />
-    <exclude-change idName="FK_COMM_PRODUCT_VARIANT_ON_IMAGE" tagName="addForeignKeyConstraint" />
-    <exclude-change idName="FK_COMM_PRODUCT_VARIANT_ON_PRODUCT" tagName="addForeignKeyConstraint" />
-    <exclude-change idName="FK_COMM_PRODUCT_VARIANT_ON_SPEC_VALUE1" tagName="addForeignKeyConstraint" />
-    <exclude-change idName="FK_COMM_PRODUCT_VARIANT_ON_SPEC_VALUE2" tagName="addForeignKeyConstraint" />
-    <exclude-change idName="FK_COMM_PRODUCT_VARIANT_ON_SPEC_VALUE3" tagName="addForeignKeyConstraint" />
-    <exclude-change idName="fk_comprocatrel_on_category_entity" tagName="addForeignKeyConstraint" />
-    <exclude-change idName="fk_comprocatrel_on_product_entity" tagName="addForeignKeyConstraint" />
-    <exclude-change idName="FK_PRODUCTIMAGEENTITY_ON_PRODUCT" tagName="addForeignKeyConstraint" />
+      <exclude-change idName="FK_COMM_PRODUCT_ATTRIBUTE_VALUE_ON_ATTRIBUTE" tagName="addForeignKeyConstraint"/>
+      <exclude-change idName="FK_COMM_PRODUCT_IMAGE_ON_PRODUCT" tagName="addForeignKeyConstraint"/>
+      <exclude-change idName="FK_COMM_PRODUCT_VARIANT_ON_IMAGE" tagName="addForeignKeyConstraint"/>
+      <exclude-change idName="FK_COMM_PRODUCT_VARIANT_ON_PRODUCT" tagName="addForeignKeyConstraint"/>
+      <exclude-change idName="FK_COMM_PRODUCT_VARIANT_ON_SPEC_VALUE1" tagName="addForeignKeyConstraint"/>
+      <exclude-change idName="FK_COMM_PRODUCT_VARIANT_ON_SPEC_VALUE2" tagName="addForeignKeyConstraint"/>
+      <exclude-change idName="FK_COMM_PRODUCT_VARIANT_ON_SPEC_VALUE3" tagName="addForeignKeyConstraint"/>
+      <exclude-change idName="fk_comprocatrel_on_category_entity" tagName="addForeignKeyConstraint"/>
+      <exclude-change idName="fk_comprocatrel_on_product_entity" tagName="addForeignKeyConstraint"/>
+      <exclude-change idName="FK_PRODUCTIMAGEENTITY_ON_PRODUCT" tagName="addForeignKeyConstraint"/>
+      <exclude-change idName="FK_COMM_CART_LINE_ITEM_ON_CART" tagName="addForeignKeyConstraint"/>
+      <exclude-change idName="FK_COMM_CART_LINE_ITEM_ON_PRODUCT" tagName="addForeignKeyConstraint"/>
+      <exclude-change idName="FK_COMM_CART_LINE_ITEM_ON_VARIANT" tagName="addForeignKeyConstraint"/>
+      <exclude-change idName="FK_COMM_CART_ON_CUSTOMER" tagName="addForeignKeyConstraint"/>
   </component>
   <component name="JpaPluginProjectSettings">
     <option name="entityNameTemplate" />

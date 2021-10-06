@@ -3,13 +3,13 @@ package com.homecook.homecookentity.repository.impl;
 import com.homecook.homecookentity.repository.CustomJpaRepository;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.io.Serializable;
 
 public class DefaultCustomJpaRepository<T, ID extends Serializable> extends SimpleJpaRepository<T, ID>
-    implements CustomJpaRepository<T, ID>
+        implements CustomJpaRepository<T, ID>
 {
     private final EntityManager em;
 
@@ -24,7 +24,8 @@ public class DefaultCustomJpaRepository<T, ID extends Serializable> extends Simp
     @Transactional
     public void refresh(T t)
     {
-        if (em.contains(t)) {
+        if (em.contains(t))
+        {
             em.refresh(t);
         }
     }

@@ -1,3 +1,36 @@
+CREATE TABLE comm_cart
+(
+    id              BIGINT AUTO_INCREMENT NOT NULL,
+    created_at      datetime              NOT NULL,
+    updated_at      datetime              NULL,
+    version         INT                   NULL,
+    code            VARCHAR(255)          NULL,
+    subtotal        DOUBLE                NULL,
+    total_price     DOUBLE                NULL,
+    total_discounts DOUBLE                NULL,
+    customer_id     BIGINT                NULL,
+    CONSTRAINT pk_comm_cart PRIMARY KEY (id)
+);
+
+CREATE TABLE comm_cart_line_item
+(
+    id              BIGINT AUTO_INCREMENT NOT NULL,
+    created_at      datetime              NOT NULL,
+    updated_at      datetime              NULL,
+    version         INT                   NULL,
+    name            VARCHAR(255)          NULL,
+    price           DOUBLE                NULL,
+    quantity        INT                   NULL,
+    sku             VARCHAR(255)          NULL,
+    product_id      BIGINT                NULL,
+    variant_id      BIGINT                NULL,
+    subtotal        DOUBLE                NULL,
+    total_discounts DOUBLE                NULL,
+    total_price     DOUBLE                NULL,
+    cart_id         BIGINT                NULL,
+    CONSTRAINT pk_comm_cart_line_item PRIMARY KEY (id)
+);
+
 CREATE TABLE comm_category
 (
     id                    BIGINT AUTO_INCREMENT NOT NULL,
@@ -127,6 +160,9 @@ CREATE TABLE product_image_entity
     product_id     BIGINT                NULL,
     CONSTRAINT pk_productimageentity PRIMARY KEY (id)
 );
+
+ALTER TABLE comm_cart
+    ADD CONSTRAINT uc_comm_cart_code UNIQUE (code);
 
 ALTER TABLE comm_customer
     ADD CONSTRAINT uc_comm_customer_account UNIQUE (account);

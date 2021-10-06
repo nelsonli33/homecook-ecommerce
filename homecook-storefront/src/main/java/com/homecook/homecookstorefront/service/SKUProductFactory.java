@@ -2,10 +2,9 @@ package com.homecook.homecookstorefront.service;
 
 import com.homecook.homecookentity.entity.ProductEntity;
 import com.homecook.homecookentity.entity.ProductVariantEntity;
+import com.homecook.homecookstorefront.dto.SKUProduct;
 
-public interface ProductService
+public interface SKUProductFactory
 {
-    ProductEntity getProductForId(Long productId);
-
-    ProductVariantEntity getVariantForProduct(ProductEntity product, Long variantId);
+    SKUProduct createSKUProduct(ProductEntity product, ProductVariantEntity variant);
 }

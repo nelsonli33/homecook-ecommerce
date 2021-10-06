@@ -1,6 +1,7 @@
 package com.homecook.homecookstorefront.service.impl;
 
 import com.homecook.homecookentity.entity.ProductEntity;
+import com.homecook.homecookentity.entity.ProductVariantEntity;
 import com.homecook.homecookentity.repository.ProductRepository;
 import com.homecook.homecookentity.type.ProductStatusType;
 import com.homecook.homecookstorefront.error.InternalErrorCode;
@@ -35,6 +36,19 @@ public class DefaultProductService implements ProductService
             return productEntity.get();
         }
         throw new StorefrontServerRuntimeException(InternalErrorCode.ENTITY_NOT_FOUND, "Product with id " + productId + " not found.");
+    }
+
+    @Override
+    public ProductVariantEntity getVariantForProduct(ProductEntity product, Long variantId)
+    {
+        for (ProductVariantEntity variant : product.getVariants())
+        {
+            if (variant.getId().equals(variantId))
+            {
+                return variant;
+            }
+        }
+        throw new StorefrontServerRuntimeException(InternalErrorCode.ENTITY_NOT_FOUND, "Product Variant with id " + variantId + " does not exists in product with id " + product.getId());
     }
 
 

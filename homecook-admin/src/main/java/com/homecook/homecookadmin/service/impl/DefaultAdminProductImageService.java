@@ -12,7 +12,7 @@ import com.homecook.homecookadmin.service.AdminProductImageService;
 import com.homecook.homecookadmin.util.FileUtil;
 import com.homecook.homecookcommon.dto.FileInfo;
 import com.homecook.homecookcommon.service.GCSStorageService;
-import com.homecook.homecookcommon.service.impl.GUIDKeyGenerator;
+import com.homecook.homecookcommon.service.impl.UUIDKeyGenerator;
 import com.homecook.homecookentity.entity.ProductEntity;
 import com.homecook.homecookentity.entity.ProductImageEntity;
 import com.homecook.homecookentity.repository.ProductImageRepository;
@@ -42,18 +42,18 @@ public class DefaultAdminProductImageService extends AbstractBaseService impleme
     private static final Logger log = LoggerFactory.getLogger(DefaultAdminProductImageService.class);
 
     private GCSStorageService gcsStorageService;
-    private GUIDKeyGenerator guidKeyGenerator;
+    private UUIDKeyGenerator uuidKeyGenerator;
     private ProductImageRepository productImageRepository;
 
     @Autowired
     public DefaultAdminProductImageService(
             @Qualifier(value = "gcsStorageService") GCSStorageService gcsStorageService,
-            @Qualifier(value = "guidKeyGenerator") GUIDKeyGenerator guidKeyGenerator,
+            @Qualifier(value = "uuidKeyGenerator") UUIDKeyGenerator uuidKeyGenerator,
             ProductImageRepository productImageRepository
     )
     {
         this.gcsStorageService = gcsStorageService;
-        this.guidKeyGenerator = guidKeyGenerator;
+        this.uuidKeyGenerator = uuidKeyGenerator;
         this.productImageRepository = productImageRepository;
     }
 
@@ -195,7 +195,7 @@ public class DefaultAdminProductImageService extends AbstractBaseService impleme
 
         List<Blob> result = new ArrayList<>();
 
-        String filename = guidKeyGenerator.generate().toString().replace("-", "");
+        String filename = uuidKeyGenerator.generate().toString();
         String mimeType = file.getContentType();
 
         try

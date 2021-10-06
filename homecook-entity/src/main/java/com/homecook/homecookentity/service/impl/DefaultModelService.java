@@ -22,8 +22,9 @@ public class DefaultModelService implements ModelService
     @Override
     public void save(AbstractBaseEntity model)
     {
-        modelRepository.save(model);
-        modelRepository.refresh(model);
+        modelRepository.saveAndFlush(model);
+//        modelRepository.save(model);
+//        modelRepository.refresh(model);
     }
 
     @Override

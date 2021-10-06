@@ -5,12 +5,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-@Component(value = "guidKeyGenerator")
-public class GUIDKeyGenerator implements KeyGenerator
+@Component(value = "uuidKeyGenerator")
+public class UUIDKeyGenerator implements KeyGenerator
 {
     @Override
     public Object generate()
     {
-        return UUID.randomUUID().toString();
+        return UUID.randomUUID().toString().replace("-", "");
     }
 }

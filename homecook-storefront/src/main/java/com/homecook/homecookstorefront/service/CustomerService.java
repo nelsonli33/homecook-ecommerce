@@ -6,5 +6,7 @@ import java.util.Optional;
 
 public interface CustomerService
 {
+    CustomerEntity getCurrentCustomer();
+
     Optional<CustomerEntity> getCustomerForUid(String uid);
 }

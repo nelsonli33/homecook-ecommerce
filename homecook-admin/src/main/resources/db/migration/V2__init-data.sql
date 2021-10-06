@@ -39,9 +39,9 @@ VALUES (1, '2021-10-04 09:18:04', '2021-10-04 09:18:04', 0, 780.00, 100, 'shirt-
 INSERT INTO `comm_product_variant`
 VALUES (2, '2021-10-04 09:18:04', '2021-10-04 09:18:04', 0, 780.00, 100, 'shirt-20210002', NULL, 1, NULL, 1, 4, NULL);
 INSERT INTO `comm_product_variant`
-VALUES (3, '2021-10-04 09:18:04', '2021-10-04 09:18:04', 0, 780.00, 100, 'shirt-20210003', NULL, 1, NULL, 1, 5, NULL);
+VALUES (3, '2021-10-04 09:18:04', '2021-10-04 09:18:04', 0, 1280.00, 100, 'shirt-20210003', NULL, 1, NULL, 1, 5, NULL);
 INSERT INTO `comm_product_variant`
-VALUES (4, '2021-10-04 09:18:04', '2021-10-04 09:18:04', 0, 780.00, 100, 'shirt-20210004', NULL, 1, NULL, 2, 3, NULL);
+VALUES (4, '2021-10-04 09:18:04', '2021-10-04 09:18:04', 0, 780.00, 0, 'shirt-20210004', NULL, 1, NULL, 2, 3, NULL);
 INSERT INTO `comm_product_variant`
 VALUES (5, '2021-10-04 09:18:04', '2021-10-04 09:18:04', 0, 780.00, 100, 'shirt-20210005', NULL, 1, NULL, 2, 4, NULL);
 INSERT INTO `comm_product_variant`
@@ -52,7 +52,7 @@ VALUES (1, '2021-10-04 09:18:04', '2021-10-04 09:18:04', 0, '測試商品2', NUL
         'testproduct-20210001', 3, 1, NULL, NULL, NULL, NULL);
 INSERT INTO `comm_product`
 VALUES (2, '2021-10-04 09:18:58', '2021-10-04 09:18:58', 0, 'Hyperdrive 7-in-2', NULL, 'Hyperdrive 7-in-2 商品描述。', 100,
-        980.00, 'testproduct-2222222', NULL, 0, NULL, NULL, NULL, NULL);
+        980.00, 'testproduct-2222222', NULL, 1, NULL, NULL, NULL, NULL);
 
 INSERT INTO `product_image_entity`
 VALUES (1, '2021-10-04 09:17:15', '2021-10-04 09:18:04', 1, 'c9fbb662e6974cefb419e9982d214a42',

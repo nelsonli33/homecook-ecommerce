@@ -17,5 +17,7 @@ public interface EntityConstant
 
         String Customer = _Prefix + "customer";
 
+        String Cart = _Prefix + "cart";
+        String CartLineItem = _Prefix + "cart_line_item";
     }
 }

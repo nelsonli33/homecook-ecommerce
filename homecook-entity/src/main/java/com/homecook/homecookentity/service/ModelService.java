@@ -8,6 +8,8 @@ public interface ModelService
 {
     void save(AbstractBaseEntity model);
 
+    void refresh(AbstractBaseEntity model);
+
     void saveAll(Collection<? extends AbstractBaseEntity> models);
 
     void remove(AbstractBaseEntity model);

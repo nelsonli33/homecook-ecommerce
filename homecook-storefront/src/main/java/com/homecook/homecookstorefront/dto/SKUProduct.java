@@ -8,6 +8,7 @@ public class SKUProduct
     private String name;
     private Integer stock;
     private Double price;
+    private String key;
     private ProductEntity product;
     private ProductVariantEntity variant;
     private String sku;
@@ -46,6 +47,16 @@ public class SKUProduct
     public ProductEntity getProduct()
     {
         return product;
+    }
+
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey(String key)
+    {
+        this.key = key;
     }
 
     public void setProduct(ProductEntity product)

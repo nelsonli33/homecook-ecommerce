@@ -2,13 +2,14 @@ package com.homecook.homecookstorefront.service.impl;
 
 import com.homecook.homecookentity.entity.CartEntity;
 import com.homecook.homecookentity.entity.CartLineItemEntity;
+import com.homecook.homecookentity.entity.ProductEntity;
+import com.homecook.homecookentity.entity.ProductVariantEntity;
 import com.homecook.homecookentity.repository.CartRepository;
+import com.homecook.homecookentity.service.ModelService;
 import com.homecook.homecookstorefront.dto.SKUProduct;
 import com.homecook.homecookstorefront.error.InternalErrorCode;
 import com.homecook.homecookstorefront.exception.StorefrontServerRuntimeException;
-import com.homecook.homecookstorefront.service.CartFactory;
-import com.homecook.homecookstorefront.service.CartService;
-import com.homecook.homecookstorefront.service.CustomerService;
+import com.homecook.homecookstorefront.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +23,21 @@ public class DefaultCartService implements CartService
     private CartRepository cartRepository;
     private CartFactory cartFactory;
     private CustomerService customerService;
+    private SKUProductFactory skuProductFactory;
+    private ProductService productService;
+    private ModelService modelService;
+    private CalculationService calculationService;
 
     @Autowired
-    public DefaultCartService(CartRepository cartRepository, CartFactory cartFactory, CustomerService customerService)
+    public DefaultCartService(CartRepository cartRepository, CartFactory cartFactory, CustomerService customerService, SKUProductFactory skuProductFactory, ProductService productService, ModelService modelService, CalculationService calculationService)
     {
         this.cartRepository = cartRepository;
         this.cartFactory = cartFactory;
         this.customerService = customerService;
+        this.skuProductFactory = skuProductFactory;
+        this.productService = productService;
+        this.modelService = modelService;
+        this.calculationService = calculationService;
     }
 
     @Override
@@ -37,7 +46,7 @@ public class DefaultCartService implements CartService
         final CartEntity cart = cartRepository.findCartEntityByCustomer(customerService.getCurrentCustomer());
         if (cart != null)
         {
-            return cart;
+            return refreshCart(cart);
         }
         else
         {
@@ -45,10 +54,29 @@ public class DefaultCartService implements CartService
         }
     }
 
+    private CartEntity refreshCart(CartEntity cart)
+    {
+        validateParameterNotNullStandardMessage("cart", cart);
+
+        boolean updated = false;
+
+        for (CartLineItemEntity lineItem : cart.getLineItems())
+        {
+            updated = updateCartLineItem(lineItem);
+        }
+
+        if (updated)
+        {
+            modelService.refresh(cart);
+            calculationService.calculate(cart);
+        }
+
+        return cart;
+    }
+
     @Override
     public CartLineItemEntity addLineItem(CartEntity cart, SKUProduct skuProduct, int qty)
     {
-
         validateParameterNotNullStandardMessage("cart", cart);
         validateParameterNotNullStandardMessage("skuProduct", skuProduct);
 
@@ -59,8 +87,15 @@ public class DefaultCartService implements CartService
 
         CartLineItemEntity lineItem = getCartLineItemForSKUProduct(cart, skuProduct);
 
-        if (lineItem != null)
+        if (lineItem != null && lineItem.getItemKey().equals(skuProduct.getKey()))
         {
+            lineItem.setQuantity(lineItem.getQuantity() + qty);
+            return lineItem;
+        }
+
+        if (lineItem != null && !lineItem.getItemKey().equals(skuProduct.getKey()))
+        {
+            updateCartLineItemInfoForSKUProduct(lineItem, skuProduct);
             lineItem.setQuantity(lineItem.getQuantity() + qty);
             return lineItem;
         }
@@ -72,6 +107,7 @@ public class DefaultCartService implements CartService
         lineItem.setSku(skuProduct.getSku());
         lineItem.setProduct(skuProduct.getProduct());
         lineItem.setVariant(skuProduct.getVariant());
+        lineItem.setItemKey(skuProduct.getKey());
         lineItem.setCart(cart);
         cart.getLineItems().add(lineItem);
         return lineItem;
@@ -102,5 +138,39 @@ public class DefaultCartService implements CartService
             }
         }
         return null;
+    }
+
+    private boolean updateCartLineItem(CartLineItemEntity lineItem)
+    {
+        final ProductEntity product = productService.getProductForId(lineItem.getProductId());
+        ProductVariantEntity variant = null;
+        if (lineItem.getVariantId() != null)
+        {
+            variant = productService.getVariantForProduct(product, lineItem.getVariantId());
+        }
+        SKUProduct skuProduct = skuProductFactory.createSKUProduct(product, variant);
+        return updateCartLineItemInfoForSKUProduct(lineItem, skuProduct);
+    }
+
+    private boolean updateCartLineItemInfoForSKUProduct(CartLineItemEntity lineItem, SKUProduct skuProduct)
+    {
+        validateParameterNotNullStandardMessage("lineItem", lineItem);
+        validateParameterNotNullStandardMessage("skuProduct", skuProduct);
+
+        boolean updated = false;
+
+        if (!lineItem.getItemKey().equals(skuProduct.getKey()))
+        {
+            lineItem.setName(skuProduct.getName());
+            lineItem.setPrice(skuProduct.getPrice());
+            lineItem.setSku(skuProduct.getSku());
+            lineItem.setItemKey(skuProduct.getKey());
+            lineItem.setProduct(skuProduct.getProduct());
+            lineItem.setVariant(skuProduct.getVariant());
+            updated = true;
+            modelService.save(lineItem);
+        }
+
+        return updated;
     }
 }

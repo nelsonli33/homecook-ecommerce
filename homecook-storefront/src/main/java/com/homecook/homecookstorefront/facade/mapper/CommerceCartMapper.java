@@ -6,6 +6,7 @@ import com.homecook.homecookentity.entity.ProductVariantEntity;
 import com.homecook.homecookstorefront.dto.AddToCartDTO;
 import com.homecook.homecookstorefront.dto.CommerceCartParameter;
 import com.homecook.homecookstorefront.dto.SKUProduct;
+import com.homecook.homecookstorefront.dto.UpdateCartDTO;
 import com.homecook.homecookstorefront.service.CartService;
 import com.homecook.homecookstorefront.service.ProductService;
 import com.homecook.homecookstorefront.service.SKUProductFactory;
@@ -47,6 +48,32 @@ public abstract class CommerceCartMapper
         commerceCartParameter.setCart(cart);
         commerceCartParameter.setSkuProduct(skuProduct);
         commerceCartParameter.setQuantity(addToCartDTO.getQuantity());
+    }
+
+
+    @Mappings({
+            @Mapping(target = "cart", ignore = true),
+            @Mapping(target = "skuProduct", ignore = true)
+    })
+    public abstract CommerceCartParameter convertToCommerceCartParameter(UpdateCartDTO updateCartDTO);
+
+    @AfterMapping
+    protected void after(UpdateCartDTO updateCartDTO, @MappingTarget CommerceCartParameter commerceCartParameter)
+    {
+        ProductEntity productEntity = getProductService().getProductForId(updateCartDTO.getProductId());
+
+        ProductVariantEntity variantEntity = null;
+        if (updateCartDTO.getVariantId() != null)
+        {
+            variantEntity = productService.getVariantForProduct(productEntity, updateCartDTO.getVariantId());
+        }
+
+        SKUProduct skuProduct = getSkuProductFactory().createSKUProduct(productEntity, variantEntity);
+        CartEntity cart = getCartService().getCartForCurrentCustomer();
+
+        commerceCartParameter.setCart(cart);
+        commerceCartParameter.setSkuProduct(skuProduct);
+        commerceCartParameter.setQuantity(updateCartDTO.getQuantity());
     }
 
 

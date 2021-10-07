@@ -22,6 +22,7 @@ CREATE TABLE comm_cart_line_item
     price           DOUBLE                NULL,
     quantity        INT                   NULL,
     sku             VARCHAR(255)          NULL,
+    item_key        VARCHAR(255)          NULL,
     product_id      BIGINT                NULL,
     variant_id      BIGINT                NULL,
     subtotal        DOUBLE                NULL,

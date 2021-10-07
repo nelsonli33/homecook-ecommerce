@@ -20,6 +20,9 @@ public class CartLineItemEntity extends AbstractBaseEntity
     @Column(name = "sku")
     private String sku;
 
+    @Column(name = "item_key")
+    private String itemKey;
+
     @Column(name = "product_id", insertable = false, updatable = false)
     private Long productId;
 
@@ -85,6 +88,16 @@ public class CartLineItemEntity extends AbstractBaseEntity
     public void setSku(String sku)
     {
         this.sku = sku;
+    }
+
+    public String getItemKey()
+    {
+        return itemKey;
+    }
+
+    public void setItemKey(String itemKey)
+    {
+        this.itemKey = itemKey;
     }
 
     public Long getProductId()

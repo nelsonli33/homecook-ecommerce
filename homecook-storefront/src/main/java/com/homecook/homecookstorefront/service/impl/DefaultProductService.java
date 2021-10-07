@@ -51,7 +51,6 @@ public class DefaultProductService implements ProductService
         throw new StorefrontServerRuntimeException(InternalErrorCode.ENTITY_NOT_FOUND, "Product Variant with id " + variantId + " does not exists in product with id " + product.getId());
     }
 
-
     private Specification<ProductEntity> getProductSpecification(Long productId)
     {
         return (root, query, cb) -> {

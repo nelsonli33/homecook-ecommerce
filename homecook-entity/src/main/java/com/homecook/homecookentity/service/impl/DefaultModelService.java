@@ -28,6 +28,12 @@ public class DefaultModelService implements ModelService
     }
 
     @Override
+    public void refresh(AbstractBaseEntity model)
+    {
+        modelRepository.refresh(model);
+    }
+
+    @Override
     public void saveAll(Collection<? extends AbstractBaseEntity> models)
     {
         modelRepository.saveAll(models);

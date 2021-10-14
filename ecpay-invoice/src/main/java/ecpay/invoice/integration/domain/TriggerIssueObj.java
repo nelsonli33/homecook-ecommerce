@@ -30,7 +30,7 @@ public class TriggerIssueObj
      * PayType
      * 交易類別
      */
-    private String PayType = "3";
+    private String PayType = "2";
 
     /********************* getters and setters *********************/
 

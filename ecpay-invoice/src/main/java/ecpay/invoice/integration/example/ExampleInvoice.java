@@ -9,7 +9,6 @@ import java.util.UUID;
 public class ExampleInvoice
 {
 
-
     private static EcpayInvoiceClient client = new EcpayInvoiceClient.Builder()
             .operatingMode(OperatingMode.TEST)
             .MerchantID("2000132")
@@ -36,7 +35,7 @@ public class ExampleInvoice
     }
 
 
-    public static String postIssue()
+    public static IssueResultObj postIssue()
     {
         IssueObj obj = new IssueObj();
         UUID uid = UUID.randomUUID();
@@ -60,7 +59,7 @@ public class ExampleInvoice
         return client.issue(obj);
     }
 
-    public static String postDelayIssue()
+    public static DelayIssueResultObj postDelayIssue()
     {
         DelayIssueObj obj = new DelayIssueObj();
         UUID uid = UUID.randomUUID();
@@ -84,14 +83,14 @@ public class ExampleInvoice
         return client.delayIssue(obj);
     }
 
-    public static String postTriggerIssue()
+    public static TriggerIssueResultObj postTriggerIssue()
     {
         TriggerIssueObj obj = new TriggerIssueObj();
-        obj.setTsr("521sd5595fowijl2khj");
+        obj.setTsr("b12b2018e8814e208b1adf00264337");
         return client.triggerIssue(obj);
     }
 
-    public static String postAllowance()
+    public static AllowanceResultObj postAllowance()
     {
         AllowanceObj obj = new AllowanceObj();
         obj.setInvoiceNo("FX60011787");
@@ -108,7 +107,7 @@ public class ExampleInvoice
         return client.allowance(obj);
     }
 
-    public static String postAllowanceByCollegiate()
+    public static AllowanceByCollegiateResultObj postAllowanceByCollegiate()
     {
         AllowanceByCollegiateObj obj = new AllowanceByCollegiateObj();
         obj.setInvoiceNo("TE10032604");
@@ -127,7 +126,7 @@ public class ExampleInvoice
         return client.allowancebycollegiate(obj);
     }
 
-    public static String postIssueInvalid()
+    public static IssueInvalidResultObj postIssueInvalid()
     {
         IssueInvalidObj obj = new IssueInvalidObj();
         obj.setInvoiceNumber("XN12345678");
@@ -135,7 +134,7 @@ public class ExampleInvoice
         return client.issueInvalid(obj);
     }
 
-    public static String postAllowanceInvalid()
+    public static AllowanceInvalidResultObj postAllowanceInvalid()
     {
         AllowanceInvalidObj obj = new AllowanceInvalidObj();
         obj.setInvoiceNo("XN12345678");
@@ -144,10 +143,10 @@ public class ExampleInvoice
         return client.allowanceInvalid(obj);
     }
 
-    public static String postQueryIssue()
+    public static QueryIssueResultObj postQueryIssue()
     {
         QueryIssueObj obj = new QueryIssueObj();
-        obj.setRelateNumber("sdjfklkwjegoihoi");
+        obj.setRelateNumber("AA20211013000075163");
         return client.queryIssue(obj);
     }
 
@@ -159,22 +158,22 @@ public class ExampleInvoice
         return client.queryAllowance(obj);
     }
 
-    public static String postQueryIssueInvalid()
+    public static QueryIssueInvalidResultObj postQueryIssueInvalid()
     {
         QueryIssueInvalidObj obj = new QueryIssueInvalidObj();
-        obj.setRelateNumber("sdfwhifueifhldiohf");
+        obj.setRelateNumber("AA20211014000012723");
         return client.queryIssueInvalid(obj);
     }
 
-    public static String postQueryAllowanceInvalid()
+    public static QueryAllowanceInvalidResultObj postQueryAllowanceInvalid()
     {
         QueryAllowanceInvalidObj obj = new QueryAllowanceInvalidObj();
-        obj.setInvoiceNo("TU00005705");
-        obj.setAllowanceNo("2017052311296404");
+        obj.setInvoiceNo("NQ50007604");
+        obj.setAllowanceNo("2021101317419735");
         return client.queryAllowanceInvalid(obj);
     }
 
-    public static String postInvoiceNotify()
+    public static InvoiceNotifyResultObj postInvoiceNotify()
     {
         InvoiceNotifyObj obj = new InvoiceNotifyObj();
         obj.setInvoiceNo("XN12345678");
@@ -187,17 +186,17 @@ public class ExampleInvoice
         return client.invoiceNotify(obj);
     }
 
-    public static String postCheckMobileBarCode()
+    public static CheckMobileBarCodeResultObj postCheckMobileBarCode()
     {
         CheckMobileBarCodeObj obj = new CheckMobileBarCodeObj();
         obj.setBarCode("/6G.X3LQ");
         return client.checkMobileBarCode(obj);
     }
 
-    public static String postCheckLoveCode()
+    public static CheckLoveCodeResultObj postCheckLoveCode()
     {
         CheckLoveCodeObj obj = new CheckLoveCodeObj();
-        obj.setLoveCode("X123456");
+        obj.setLoveCode("919");
         return client.checkLoveCode(obj);
     }
 }

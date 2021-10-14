@@ -41,12 +41,12 @@ public class EcpayInvoiceClient
         Logger.getRootLogger().setLevel(Level.OFF);
     }
 
-    public String issue(IssueObj obj)
+    public IssueResultObj issue(IssueObj obj)
     {
         obj.setMerchantID(MerchantID);
         obj.setTimeStamp(EcpayFunction.genUnixTimeStamp());
         log.info("issue params: " + obj.toString());
-        String result = "";
+        IssueResultObj result;
         String CheckMacValue = "";
         try
         {
@@ -65,7 +65,8 @@ public class EcpayInvoiceClient
             log.info("issue generate CheckMacValue: " + CheckMacValue);
             String httpValue = EcpayFunction.genHttpValue(obj, CheckMacValue);
             log.info("issue post String: " + httpValue);
-            result = EcpayFunction.httpPost(issueUrl, httpValue, "UTF-8");
+            String resultInfo = EcpayFunction.httpPost(issueUrl, httpValue, "UTF-8");
+            result = EcpayFunction.convertValue(resultInfo, IssueResultObj.class);
         }
         catch (EcpayException e)
         {
@@ -76,12 +77,12 @@ public class EcpayInvoiceClient
         return result;
     }
 
-    public String delayIssue(DelayIssueObj obj)
+    public DelayIssueResultObj delayIssue(DelayIssueObj obj)
     {
         obj.setMerchantID(MerchantID);
         obj.setTimeStamp(EcpayFunction.genUnixTimeStamp());
         log.info("delayIssue params: " + obj.toString());
-        String result = "";
+        DelayIssueResultObj result;
         String CheckMacValue = "";
         try
         {
@@ -99,7 +100,8 @@ public class EcpayInvoiceClient
             log.info("delayIssue generate CheckMacValue: " + CheckMacValue);
             String httpValue = EcpayFunction.genHttpValue(obj, CheckMacValue);
             log.info("delayIssue post String: " + httpValue);
-            result = EcpayFunction.httpPost(delayIssueUrl, httpValue, "UTF-8");
+            String resultInfo = EcpayFunction.httpPost(delayIssueUrl, httpValue, "UTF-8");
+            result = EcpayFunction.convertValue(resultInfo, DelayIssueResultObj.class);
         }
         catch (EcpayException e)
         {
@@ -110,12 +112,12 @@ public class EcpayInvoiceClient
         return result;
     }
 
-    public String triggerIssue(TriggerIssueObj obj)
+    public TriggerIssueResultObj triggerIssue(TriggerIssueObj obj)
     {
         obj.setMerchantID(MerchantID);
         obj.setTimeStamp(EcpayFunction.genUnixTimeStamp());
         log.info("triggerIssue params: " + obj.toString());
-        String result = "";
+        TriggerIssueResultObj result;
         String CheckMacValue = "";
         try
         {
@@ -126,7 +128,8 @@ public class EcpayInvoiceClient
             log.info("triggerIssue generate CheckMacValue: " + CheckMacValue);
             String httpValue = EcpayFunction.genHttpValue(obj, CheckMacValue);
             log.info("triggerIssue post String: " + httpValue);
-            result = EcpayFunction.httpPost(triggerIssueUrl, httpValue, "UTF-8");
+            String resultInfo = EcpayFunction.httpPost(triggerIssueUrl, httpValue, "UTF-8");
+            result = EcpayFunction.convertValue(resultInfo, TriggerIssueResultObj.class);
         }
         catch (EcpayException e)
         {
@@ -137,12 +140,12 @@ public class EcpayInvoiceClient
         return result;
     }
 
-    public String allowance(AllowanceObj obj)
+    public AllowanceResultObj allowance(AllowanceObj obj)
     {
         obj.setMerchantID(MerchantID);
         obj.setTimeStamp(EcpayFunction.genUnixTimeStamp());
         log.info("allowance params: " + obj.toString());
-        String result = "";
+        AllowanceResultObj result;
         String CheckMacValue = "";
         try
         {
@@ -157,7 +160,8 @@ public class EcpayInvoiceClient
             log.info("allowance generate CheckMacValue: " + CheckMacValue);
             String httpValue = EcpayFunction.genHttpValue(obj, CheckMacValue);
             log.info("allowance post String: " + httpValue);
-            result = EcpayFunction.httpPost(allowanceUrl, httpValue, "UTF-8");
+            String resultInfo = EcpayFunction.httpPost(allowanceUrl, httpValue, "UTF-8");
+            result = EcpayFunction.convertValue(resultInfo, AllowanceResultObj.class);
         }
         catch (EcpayException e)
         {
@@ -168,12 +172,12 @@ public class EcpayInvoiceClient
         return result;
     }
 
-    public String allowancebycollegiate(AllowanceByCollegiateObj obj)
+    public AllowanceByCollegiateResultObj allowancebycollegiate(AllowanceByCollegiateObj obj)
     {
         obj.setMerchantID(MerchantID);
         obj.setTimeStamp(EcpayFunction.genUnixTimeStamp());
         log.info("allowance params: " + obj.toString());
-        String result = "";
+        AllowanceByCollegiateResultObj result;
         String CheckMacValue = "";
         try
         {
@@ -188,7 +192,8 @@ public class EcpayInvoiceClient
             log.info("allowance generate CheckMacValue: " + CheckMacValue);
             String httpValue = EcpayFunction.genHttpValue(obj, CheckMacValue);
             log.info("allowance post String: " + httpValue);
-            result = EcpayFunction.httpPost(allowancebycollegiateUrl, httpValue, "UTF-8");
+            String resultInfo = EcpayFunction.httpPost(allowancebycollegiateUrl, httpValue, "UTF-8");
+            result = EcpayFunction.convertValue(resultInfo, AllowanceByCollegiateResultObj.class);
         }
         catch (EcpayException e)
         {
@@ -199,12 +204,12 @@ public class EcpayInvoiceClient
         return result;
     }
 
-    public String issueInvalid(IssueInvalidObj obj)
+    public IssueInvalidResultObj issueInvalid(IssueInvalidObj obj)
     {
         obj.setMerchantID(MerchantID);
         obj.setTimeStamp(EcpayFunction.genUnixTimeStamp());
         log.info("issueInvalid params: " + obj.toString());
-        String result = "";
+        IssueInvalidResultObj result;
         String CheckMacValue = "";
         try
         {
@@ -216,7 +221,8 @@ public class EcpayInvoiceClient
             log.info("issueInvalid generate CheckMacValue: " + CheckMacValue);
             String httpValue = EcpayFunction.genHttpValue(obj, CheckMacValue);
             log.info("issueInvalid post String: " + httpValue);
-            result = EcpayFunction.httpPost(issueInvalidUrl, httpValue, "UTF-8");
+            String resultInfo = EcpayFunction.httpPost(issueInvalidUrl, httpValue, "UTF-8");
+            result = EcpayFunction.convertValue(resultInfo, IssueInvalidResultObj.class);
         }
         catch (EcpayException e)
         {
@@ -227,12 +233,12 @@ public class EcpayInvoiceClient
         return result;
     }
 
-    public String allowanceInvalid(AllowanceInvalidObj obj)
+    public AllowanceInvalidResultObj allowanceInvalid(AllowanceInvalidObj obj)
     {
         obj.setMerchantID(MerchantID);
         obj.setTimeStamp(EcpayFunction.genUnixTimeStamp());
         log.info("allowanceInvalid params: " + obj.toString());
-        String result = "";
+        AllowanceInvalidResultObj result;
         String CheckMacValue = "";
         try
         {
@@ -244,7 +250,8 @@ public class EcpayInvoiceClient
             log.info("allowanceInvalid generate CheckMacValue: " + CheckMacValue);
             String httpValue = EcpayFunction.genHttpValue(obj, CheckMacValue);
             log.info("allowanceInvalid post String: " + httpValue);
-            result = EcpayFunction.httpPost(allowanceInvalidUrl, httpValue, "UTF-8");
+            String resultInfo = EcpayFunction.httpPost(allowanceInvalidUrl, httpValue, "UTF-8");
+            result = EcpayFunction.convertValue(resultInfo, AllowanceInvalidResultObj.class);
         }
         catch (EcpayException e)
         {
@@ -255,12 +262,12 @@ public class EcpayInvoiceClient
         return result;
     }
 
-    public String queryIssue(QueryIssueObj obj)
+    public QueryIssueResultObj queryIssue(QueryIssueObj obj)
     {
         obj.setMerchantID(MerchantID);
         obj.setTimeStamp(EcpayFunction.genUnixTimeStamp());
         log.info("queryIssue params: " + obj.toString());
-        String result = "";
+        QueryIssueResultObj result;
         String CheckMacValue = "";
         try
         {
@@ -271,7 +278,8 @@ public class EcpayInvoiceClient
             log.info("queryIssue generate CheckMacValue: " + CheckMacValue);
             String httpValue = EcpayFunction.genHttpValue(obj, CheckMacValue);
             log.info("queryIssue post String: " + httpValue);
-            result = EcpayFunction.httpPost(queryIssueUrl, httpValue, "UTF-8");
+            String resultInfo = EcpayFunction.httpPost(queryIssueUrl, httpValue, "UTF-8");
+            result = EcpayFunction.convertValue(resultInfo, QueryIssueResultObj.class);
         }
         catch (EcpayException e)
         {
@@ -309,12 +317,12 @@ public class EcpayInvoiceClient
         return result;
     }
 
-    public String queryIssueInvalid(QueryIssueInvalidObj obj)
+    public QueryIssueInvalidResultObj queryIssueInvalid(QueryIssueInvalidObj obj)
     {
         obj.setMerchantID(MerchantID);
         obj.setTimeStamp(EcpayFunction.genUnixTimeStamp());
         log.info("queryIssueInvalid params: " + obj.toString());
-        String result = "";
+        QueryIssueInvalidResultObj result;
         String CheckMacValue = "";
         try
         {
@@ -325,7 +333,8 @@ public class EcpayInvoiceClient
             log.info("queryIssueInvalid generate CheckMacValue: " + CheckMacValue);
             String httpValue = EcpayFunction.genHttpValue(obj, CheckMacValue);
             log.info("queryIssueInvalid post String: " + httpValue);
-            result = EcpayFunction.httpPost(queryIssueInvalidUrl, httpValue, "UTF-8");
+            String resultInfo = EcpayFunction.httpPost(queryIssueInvalidUrl, httpValue, "UTF-8");
+            result = EcpayFunction.convertValue(resultInfo, QueryIssueInvalidResultObj.class);
         }
         catch (EcpayException e)
         {
@@ -336,12 +345,12 @@ public class EcpayInvoiceClient
         return result;
     }
 
-    public String queryAllowanceInvalid(QueryAllowanceInvalidObj obj)
+    public QueryAllowanceInvalidResultObj queryAllowanceInvalid(QueryAllowanceInvalidObj obj)
     {
         obj.setMerchantID(MerchantID);
         obj.setTimeStamp(EcpayFunction.genUnixTimeStamp());
         log.info("queryAllowanceInvalid params: " + obj.toString());
-        String result = "";
+        QueryAllowanceInvalidResultObj result;
         String CheckMacValue = "";
         try
         {
@@ -352,7 +361,8 @@ public class EcpayInvoiceClient
             log.info("queryAllowanceInvalid generate CheckMacValue: " + CheckMacValue);
             String httpValue = EcpayFunction.genHttpValue(obj, CheckMacValue);
             log.info("queryAllowanceInvalid post String: " + httpValue);
-            result = EcpayFunction.httpPost(queryAllowanceInvalidUrl, httpValue, "UTF-8");
+            String resultInfo = EcpayFunction.httpPost(queryAllowanceInvalidUrl, httpValue, "UTF-8");
+            result = EcpayFunction.convertValue(resultInfo, QueryAllowanceInvalidResultObj.class);
         }
         catch (EcpayException e)
         {
@@ -363,12 +373,12 @@ public class EcpayInvoiceClient
         return result;
     }
 
-    public String invoiceNotify(InvoiceNotifyObj obj)
+    public InvoiceNotifyResultObj invoiceNotify(InvoiceNotifyObj obj)
     {
         obj.setMerchantID(MerchantID);
         obj.setTimeStamp(EcpayFunction.genUnixTimeStamp());
         log.info("invoiceNotify params: " + obj.toString());
-        String result = "";
+        InvoiceNotifyResultObj result;
         String CheckMacValue = "";
         try
         {
@@ -380,7 +390,8 @@ public class EcpayInvoiceClient
             log.info("invoiceNotify generate CheckMacValue: " + CheckMacValue);
             String httpValue = EcpayFunction.genHttpValue(obj, CheckMacValue);
             log.info("invoiceNotify post String: " + httpValue);
-            result = EcpayFunction.httpPost(invoiceNotifyUrl, httpValue, "UTF-8");
+            String resultInfo = EcpayFunction.httpPost(invoiceNotifyUrl, httpValue, "UTF-8");
+            result = EcpayFunction.convertValue(resultInfo, InvoiceNotifyResultObj.class);
         }
         catch (EcpayException e)
         {
@@ -391,7 +402,7 @@ public class EcpayInvoiceClient
         return result;
     }
 
-    public String checkMobileBarCode(CheckMobileBarCodeObj obj)
+    public CheckMobileBarCodeResultObj checkMobileBarCode(CheckMobileBarCodeObj obj)
     {
         obj.setMerchantID(MerchantID);
         obj.setTimeStamp(EcpayFunction.genUnixTimeStamp());
@@ -401,7 +412,7 @@ public class EcpayInvoiceClient
             obj.setBarCode(tmp);
         }
         log.info("checkMobileBarCode params: " + obj.toString());
-        String result = "";
+        CheckMobileBarCodeResultObj result;
         String CheckMacValue = "";
         try
         {
@@ -412,7 +423,8 @@ public class EcpayInvoiceClient
             log.info("checkMobileBarCode generate CheckMacValue: " + CheckMacValue);
             String httpValue = EcpayFunction.genHttpValue(obj, CheckMacValue);
             log.info("checkMobileBarCode post String: " + httpValue);
-            result = EcpayFunction.httpPost(checkMobileBarCodeUrl, httpValue, "UTF-8");
+            String resultInfo = EcpayFunction.httpPost(checkMobileBarCodeUrl, httpValue, "UTF-8");
+            result = EcpayFunction.convertValue(resultInfo, CheckMobileBarCodeResultObj.class);
         }
         catch (EcpayException e)
         {
@@ -423,12 +435,12 @@ public class EcpayInvoiceClient
         return result;
     }
 
-    public String checkLoveCode(CheckLoveCodeObj obj)
+    public CheckLoveCodeResultObj checkLoveCode(CheckLoveCodeObj obj)
     {
         obj.setMerchantID(MerchantID);
         obj.setTimeStamp(EcpayFunction.genUnixTimeStamp());
         log.info("checkLoveCode params: " + obj.toString());
-        String result = "";
+        CheckLoveCodeResultObj result;
         String CheckMacValue = "";
         try
         {
@@ -439,7 +451,8 @@ public class EcpayInvoiceClient
             log.info("checkLoveCode generate CheckMacValue: " + CheckMacValue);
             String httpValue = EcpayFunction.genHttpValue(obj, CheckMacValue);
             log.info("checkLoveCode post String: " + httpValue);
-            result = EcpayFunction.httpPost(checkLoveCodeUrl, httpValue, "UTF-8");
+            String resultInfo = EcpayFunction.httpPost(checkLoveCodeUrl, httpValue, "UTF-8");
+            result = EcpayFunction.convertValue(resultInfo, CheckLoveCodeResultObj.class);
         }
         catch (EcpayException e)
         {

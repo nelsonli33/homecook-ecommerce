@@ -1,5 +1,6 @@
 package ecpay.invoice.integration.ecpayOperator;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ecpay.invoice.integration.config.EcpayConfig;
 import ecpay.invoice.integration.errorMsg.ErrorMessage;
 import ecpay.invoice.integration.exception.EcpayException;
@@ -376,5 +377,34 @@ public class EcpayFunction
             hexChars[j * 2 + 1] = hexArray[v & 0x0F];
         }
         return new String(hexChars);
+    }
+
+    /**
+     * 將 string result 資料轉換成 map
+     *
+     * @param result
+     * @return
+     */
+    private static Map<String, String> getParameterMap(String result)
+    {
+        final Map<String, String> map = new HashMap<>();
+        final String[] params = result.split("&");
+
+        if (params != null && params.length > 0)
+        {
+            for (final String param : params)
+            {
+                final String[] p = param.split("=");
+                map.put(p[0], p.length < 2 ? "" : p[1]);
+            }
+        }
+        return map;
+    }
+
+    public static <T> T convertValue(String resultInfo, Class<T> toValueType)
+    {
+        Map<String, String> fromValue = getParameterMap(resultInfo);
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.convertValue(fromValue, toValueType);
     }
 }

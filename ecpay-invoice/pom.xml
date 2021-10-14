@@ -16,6 +16,8 @@
         <maven.compiler.target>8</maven.compiler.target>
         <javax.servlet.version>3.0.0.v201112011016</javax.servlet.version>
         <log4j.version>1.2.17</log4j.version>
+        <jackson.version>2.12.3</jackson.version>
+        <jackson.databind.version>2.12.3</jackson.databind.version>
     </properties>
 
     <dependencies>
@@ -28,6 +30,21 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.databind.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
     </dependencies>
 </project>

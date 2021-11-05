@@ -1,0 +1,37 @@
+package com.homecook.tappay.api;
+
+import com.homecook.tappay.ApiHelper;
+import com.homecook.tappay.ApiRequestUtil;
+import com.homecook.tappay.Configuration;
+import com.homecook.tappay.exception.TapPayServerConnectException;
+import com.homecook.tappay.models.RecordRequest;
+import com.homecook.tappay.models.RecordResponse;
+
+import java.io.IOException;
+
+public class DefaultRecordApi implements RecordApi
+{
+    private Configuration config;
+
+    public DefaultRecordApi(Configuration config)
+    {
+        this.config = config;
+    }
+
+    @Override
+    public RecordResponse getRecord(RecordRequest request) throws IOException, TapPayServerConnectException
+    {
+        //the base uri for api requests
+        String baseUri = config.getBaseUri();
+
+        //prepare query string for API call
+        final StringBuilder queryBuilder = new StringBuilder(baseUri
+                + "/tpc/transaction/query");
+
+        //prepare and invoke the API call request to fetch the response
+        String bodyJson = ApiHelper.serialize(request);
+        final String responseJson
+                = ApiRequestUtil.postJson(bodyJson, queryBuilder.toString(), config.getApiKey());
+        return ApiHelper.deserialize(responseJson, RecordResponse.class);
+    }
+}

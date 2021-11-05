@@ -17,7 +17,6 @@ import java.util.List;
 )
 public abstract class ProductMapper
 {
-
     public abstract ProductDTO convertToProductDTO(ProductEntity productEntity);
 
     public abstract List<ProductDTO> convertAllToProductDTO(List<ProductEntity> productEntities);

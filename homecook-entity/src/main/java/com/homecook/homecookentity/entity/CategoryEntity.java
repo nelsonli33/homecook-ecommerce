@@ -10,9 +10,15 @@ import java.util.Set;
 @Entity
 public class CategoryEntity extends AbstractBaseEntity
 {
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "sortOrder")
     private Integer sortOrder;
+
+    @Column(name = "metaTitle")
     private String metaTitle;
+
     @Column(length = 1000, columnDefinition = "TEXT")
     private String metaDescription;
 
@@ -20,14 +26,14 @@ public class CategoryEntity extends AbstractBaseEntity
     private Long parentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name = "parent_id")
     private CategoryEntity parent;
 
     @OneToMany(cascade= CascadeType.ALL, mappedBy="parent")
     private Set<CategoryEntity> children = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "attribute_category_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name = "attribute_category_id")
     private ProductAttributeCategoryEntity attributeCategory;
 
     @ManyToMany(mappedBy = "categories")

@@ -1,7 +1,6 @@
 package com.homecook.homecookstorefront.service.impl;
 
-import com.homecook.homecookentity.entity.CartEntity;
-import com.homecook.homecookentity.entity.CartLineItemEntity;
+import com.homecook.homecookentity.entity.*;
 import com.homecook.homecookentity.service.ModelService;
 import com.homecook.homecookstorefront.service.CalculationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+
+import static com.homecook.homecookcommon.util.ServicesUtil.validateParameterNotNullStandardMessage;
 
 @Service(value = "calculationService")
 public class DefaultCalculationService implements CalculationService
@@ -30,6 +31,19 @@ public class DefaultCalculationService implements CalculationService
         // -------------------------------
         // now calculate all totals
         calculateTotals(cart);
+    }
+
+    @Override
+    public void calculate(CheckoutEntity checkout)
+    {
+        validateParameterNotNullStandardMessage("checkout.cart", checkout.getCart());
+
+        // -------------------------------
+        // first recalculate cart totals
+        calculate(checkout.getCart());
+        // -------------------------------
+        // now calculate include delivery cost
+        calculateTotals(checkout);
     }
 
     private void calculateLineItems(CartEntity cart)
@@ -96,5 +110,27 @@ public class DefaultCalculationService implements CalculationService
         modelService.save(lineItem);
     }
 
+    private void calculateTotals(CheckoutEntity checkout)
+    {
+        final CartEntity cart = checkout.getCart();
+        final AddressEntity shippingAddress = checkout.getShippingAddress();
+
+
+        double cartTotalPrice = cart.getTotalPrice();
+        checkout.setSubtotal(cartTotalPrice);
+
+        double shippingCost = 0.0;
+        if (shippingAddress != null)
+        {
+            final ShippingModeEntity shippingMode = shippingAddress.getShippingMode();
+            shippingCost = shippingMode != null ? shippingMode.getShippingCost() : 0.0;
+        }
+        checkout.setShippingCost(shippingCost);
+
+        double totalPrice = cartTotalPrice + shippingCost;
+        checkout.setTotalPrice(totalPrice);
+
+        modelService.save(checkout);
+    }
 
 }

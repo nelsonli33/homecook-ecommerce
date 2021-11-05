@@ -6,7 +6,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = EntityConstant.Table.Cart)
+@Table(name = EntityConstant.Table.Cart, indexes = {
+        @Index(name = "idx_cartentity_code", columnList = "code")
+})
 @Entity
 public class CartEntity extends AbstractBaseEntity
 {
@@ -16,10 +18,10 @@ public class CartEntity extends AbstractBaseEntity
     @Column(name = "subtotal")
     private Double subtotal;
 
-    @Column(name = "totalPrice")
+    @Column(name = "total_price")
     private Double totalPrice;
 
-    @Column(name = "totalDiscounts")
+    @Column(name = "total_discounts")
     private Double totalDiscounts;
 
     @OneToOne(fetch = FetchType.LAZY)

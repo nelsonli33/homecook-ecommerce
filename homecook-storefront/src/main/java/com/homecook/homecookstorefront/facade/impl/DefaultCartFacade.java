@@ -34,6 +34,7 @@ public class DefaultCartFacade implements CartFacade
     public CartDTO getCartForCurrentCustomer()
     {
         final CartEntity cartEntity = cartService.getCartForCurrentCustomer();
+        cartService.refreshCart(cartEntity);
         return cartMapper.convertToCartDTO(cartEntity);
     }
 
@@ -72,5 +73,14 @@ public class DefaultCartFacade implements CartFacade
 
         final CartEntity cartEntity = commerceCartService.removeAllLineItems(parameter);
         return cartMapper.convertToCartDTO(cartEntity);
+    }
+
+    @Override
+    public void validateCart()
+    {
+        final CommerceCartParameter parameter = new CommerceCartParameter();
+        parameter.setCart(cartService.getCartForCurrentCustomer());
+
+        commerceCartService.validateCart(parameter);
     }
 }

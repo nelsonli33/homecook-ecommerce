@@ -36,7 +36,7 @@ public class DefaultModelService implements ModelService
     @Override
     public void saveAll(Collection<? extends AbstractBaseEntity> models)
     {
-        modelRepository.saveAll(models);
+        modelRepository.saveAllAndFlush(models);
     }
 
 

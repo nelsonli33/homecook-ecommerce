@@ -11,4 +11,6 @@ public interface CartFacade
     CartDTO updateCartLineItem(Long productId, Long variantId, int quantity);
 
     CartDTO clearCart();
+
+    void validateCart();
 }

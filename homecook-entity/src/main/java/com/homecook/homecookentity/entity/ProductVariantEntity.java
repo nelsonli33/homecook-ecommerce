@@ -10,10 +10,19 @@ import javax.persistence.*;
 @DynamicUpdate
 public class ProductVariantEntity extends AbstractBaseEntity
 {
-    @Column(columnDefinition = "DECIMAL(10,2)")
+    @Column(name = "price", columnDefinition = "DECIMAL(10,2)")
     private Double price;
+
+    @Column(name = "quantity")
     private Integer quantity;
+
+    @Column(name = "reserve_stock", columnDefinition = "INT default '0'", nullable = false)
+    private Integer reserveStock;
+
+    @Column(name = "sku")
     private String sku;
+
+    @Column(name = "sortOrder")
     private Integer sortOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,7 +46,6 @@ public class ProductVariantEntity extends AbstractBaseEntity
     private ProductAttributeValueEntity specValue3;
 
 
-
     public Double getPrice()
     {
         return price;
@@ -56,6 +64,16 @@ public class ProductVariantEntity extends AbstractBaseEntity
     public void setQuantity(Integer quantity)
     {
         this.quantity = quantity;
+    }
+
+    public Integer getReserveStock()
+    {
+        return reserveStock;
+    }
+
+    public void setReserveStock(Integer reserveStock)
+    {
+        this.reserveStock = reserveStock;
     }
 
     public String getSku()

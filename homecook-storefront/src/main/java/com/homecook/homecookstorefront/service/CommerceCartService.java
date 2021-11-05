@@ -5,9 +5,11 @@ import com.homecook.homecookstorefront.dto.CommerceCartParameter;
 
 public interface CommerceCartService
 {
-    CartEntity addToCart(CommerceCartParameter parameter);
+    CartEntity addToCart(final CommerceCartParameter parameter);
 
-    CartEntity updateQuantityForCartLineItem(CommerceCartParameter parameter);
+    CartEntity updateQuantityForCartLineItem(final CommerceCartParameter parameter);
 
     CartEntity removeAllLineItems(final CommerceCartParameter parameter);
+
+    void validateCart(final CommerceCartParameter parameter);
 }

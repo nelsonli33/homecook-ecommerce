@@ -5,6 +5,7 @@ import com.homecook.homecookentity.entity.CartLineItemEntity;
 import com.homecook.homecookentity.service.ModelService;
 import com.homecook.homecookstorefront.dto.SKUProduct;
 import com.homecook.homecookstorefront.service.CartService;
+import com.homecook.homecookstorefront.service.StockService;
 import com.homecook.homecookstorefront.service.strategy.CartCalculationStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,6 +16,7 @@ public abstract class AbstractCartStrategy
     protected int forceInStockMaxQuantity = DEFAULT_FORCE_IN_STOCK_MAX_QUANTITY;
 
     private CartService cartService;
+    private StockService stockService;
     private ModelService modelService;
     private CartCalculationStrategy cartCalculationStrategy;
 
@@ -62,7 +64,7 @@ public abstract class AbstractCartStrategy
     {
         final Integer availableSellingStockLevel;
 
-        availableSellingStockLevel = skuProduct.getStock();
+        availableSellingStockLevel = getStockService().getAvailableToSellQuantity(skuProduct.getVariant());
 
         if (availableSellingStockLevel == null)
         {
@@ -93,6 +95,17 @@ public abstract class AbstractCartStrategy
     public void setCartService(CartService cartService)
     {
         this.cartService = cartService;
+    }
+
+    public StockService getStockService()
+    {
+        return stockService;
+    }
+
+    @Autowired
+    public void setStockService(StockService stockService)
+    {
+        this.stockService = stockService;
     }
 
     public ModelService getModelService()

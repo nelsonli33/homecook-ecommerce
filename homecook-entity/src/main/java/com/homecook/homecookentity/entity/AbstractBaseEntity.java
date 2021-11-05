@@ -76,7 +76,7 @@ public class AbstractBaseEntity
         if (this == o) return true;
         if (!(o instanceof AbstractBaseEntity)) return false;
         AbstractBaseEntity that = (AbstractBaseEntity) o;
-        return getId().equals(that.getId());
+        return getId() != null && getId().equals(that.getId());
     }
 
     @Override

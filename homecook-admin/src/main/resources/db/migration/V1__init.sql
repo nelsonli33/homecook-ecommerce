@@ -1,3 +1,24 @@
+CREATE TABLE comm_address
+(
+    id               BIGINT AUTO_INCREMENT NOT NULL,
+    type             INT                   NULL,
+    created_at       datetime              NOT NULL,
+    updated_at       datetime              NULL,
+    version          INT                   NULL,
+    country          VARCHAR(255)          NULL,
+    city             VARCHAR(255)          NULL,
+    district         VARCHAR(255)          NULL,
+    zipcode          VARCHAR(255)          NULL,
+    address          VARCHAR(255)          NULL,
+    name             VARCHAR(255)          NULL,
+    phone            VARCHAR(255)          NULL,
+    store_id         VARCHAR(255)          NULL,
+    store_name       VARCHAR(255)          NULL,
+    customer_id      BIGINT                NULL,
+    shipping_mode_id BIGINT                NULL,
+    CONSTRAINT pk_comm_address PRIMARY KEY (id)
+);
+
 CREATE TABLE comm_cart
 (
     id              BIGINT AUTO_INCREMENT NOT NULL,
@@ -47,19 +68,198 @@ CREATE TABLE comm_category
     CONSTRAINT pk_comm_category PRIMARY KEY (id)
 );
 
+CREATE TABLE comm_checkout
+(
+    id                  BIGINT AUTO_INCREMENT NOT NULL,
+    created_at          datetime              NOT NULL,
+    updated_at          datetime              NULL,
+    version             INT                   NULL,
+    code                VARCHAR(255)          NULL,
+    note                VARCHAR(255)          NULL,
+    cart_id             BIGINT                NULL,
+    subtotal            DOUBLE                NULL,
+    shipping_cost       DOUBLE                NULL,
+    total_price         DOUBLE                NULL,
+    shipping_address_id BIGINT                NULL,
+    payment_mode_id     BIGINT                NULL,
+    checkout_invoice_id BIGINT                NULL,
+    customer_id         BIGINT                NULL,
+    CONSTRAINT pk_comm_checkout PRIMARY KEY (id)
+);
+
+CREATE TABLE comm_checkout_invoice
+(
+    id               BIGINT AUTO_INCREMENT NOT NULL,
+    created_at       datetime              NOT NULL,
+    updated_at       datetime              NULL,
+    version          INT                   NULL,
+    invoice_type     VARCHAR(255)          NULL,
+    contact_email    VARCHAR(255)          NULL,
+    company_name     VARCHAR(255)          NULL,
+    business_number  VARCHAR(255)          NULL,
+    charity_lovecode VARCHAR(255)          NULL,
+    charity_name     VARCHAR(255)          NULL,
+    checkout_code    VARCHAR(255)          NULL,
+    CONSTRAINT pk_comm_checkout_invoice PRIMARY KEY (id)
+);
+
+CREATE TABLE comm_credit_card_payment_info
+(
+    id             BIGINT AUTO_INCREMENT NOT NULL,
+    created_at     datetime              NOT NULL,
+    updated_at     datetime              NULL,
+    version        INT                   NULL,
+    card_bin       VARCHAR(255)          NULL,
+    card_last_four VARCHAR(255)          NULL,
+    card_type      VARCHAR(255)          NULL,
+    transaction_id BIGINT                NULL,
+    CONSTRAINT pk_comm_credit_card_payment_info PRIMARY KEY (id)
+);
+
 CREATE TABLE comm_customer
 (
-    id         BIGINT AUTO_INCREMENT NOT NULL,
-    created_at datetime              NOT NULL,
-    updated_at datetime              NULL,
-    version    INT                   NULL,
-    name       VARCHAR(255)          NULL,
-    account    VARCHAR(255)          NOT NULL,
-    password   VARCHAR(255)          NULL,
-    email      VARCHAR(255)          NULL,
-    phone      VARCHAR(255)          NULL,
-    birthday   date                  NULL,
+    id                             BIGINT AUTO_INCREMENT NOT NULL,
+    created_at                     datetime              NOT NULL,
+    updated_at                     datetime              NULL,
+    version                        INT                   NULL,
+    name                           VARCHAR(255)          NULL,
+    account                        VARCHAR(255)          NOT NULL,
+    password                       VARCHAR(255)          NULL,
+    email                          VARCHAR(255)          NULL,
+    phone                          VARCHAR(255)          NULL,
+    birthday                       date                  NULL,
+    default_address_id             BIGINT                NULL,
+    last_checkout_shipment_address BIGINT                NULL,
+    default_invoice_type           VARCHAR(255)          NULL,
+    company_invoice_setting_id     BIGINT                NULL,
+    donation_invoice_setting_id    BIGINT                NULL,
+    invoice_carrier_id             BIGINT                NULL,
+    default_payment_mode_id        BIGINT                NULL,
     CONSTRAINT pk_comm_customer PRIMARY KEY (id)
+);
+
+CREATE TABLE comm_invoice_carrier
+(
+    id           BIGINT AUTO_INCREMENT NOT NULL,
+    created_at   datetime              NOT NULL,
+    updated_at   datetime              NULL,
+    version      INT                   NULL,
+    carrier_type INT                   NULL,
+    barcode      VARCHAR(255)          NULL,
+    CONSTRAINT pk_comm_invoice_carrier PRIMARY KEY (id)
+);
+
+CREATE TABLE comm_invoice_setting
+(
+    id               BIGINT AUTO_INCREMENT NOT NULL,
+    created_at       datetime              NOT NULL,
+    updated_at       datetime              NULL,
+    version          INT                   NULL,
+    invoice_type     VARCHAR(255)          NULL,
+    contact_email    VARCHAR(255)          NULL,
+    invoice_title    VARCHAR(255)          NULL,
+    business_number  VARCHAR(255)          NULL,
+    charity_lovecode VARCHAR(255)          NULL,
+    charity_name     VARCHAR(255)          NULL,
+    CONSTRAINT pk_comm_invoice_setting PRIMARY KEY (id)
+);
+
+CREATE TABLE comm_order
+(
+    id                  BIGINT AUTO_INCREMENT NOT NULL,
+    created_at          datetime              NOT NULL,
+    updated_at          datetime              NULL,
+    version             INT                   NULL,
+    code                VARCHAR(255)          NULL,
+    order_status        VARCHAR(255)          NULL,
+    subtotal            DOUBLE                NULL,
+    total_discounts     DOUBLE                NULL,
+    shipping_cost       DOUBLE                NULL,
+    total_price         DOUBLE                NULL,
+    payment_mode_id     BIGINT                NULL,
+    payment_status      VARCHAR(255)          NULL,
+    pay_time            datetime              NULL,
+    shipping_mode_id    BIGINT                NULL,
+    shipping_address_id BIGINT                NULL,
+    note                VARCHAR(255)          NULL,
+    invoice_id          BIGINT                NULL,
+    shipped_at          datetime              NULL,
+    exp_shipping_at     datetime              NULL,
+    complete_at         datetime              NULL,
+    cancelled_at        datetime              NULL,
+    customer_id         BIGINT                NULL,
+    CONSTRAINT pk_comm_order PRIMARY KEY (id)
+);
+
+CREATE TABLE comm_order_invoice
+(
+    id              BIGINT AUTO_INCREMENT NOT NULL,
+    created_at      datetime              NOT NULL,
+    updated_at      datetime              NULL,
+    version         INT                   NULL,
+    invoice_type    VARCHAR(255)          NULL,
+    invoice_title   VARCHAR(255)          NULL,
+    business_number VARCHAR(255)          NULL,
+    contact_email   VARCHAR(255)          NULL,
+    love_code       VARCHAR(255)          NULL,
+    invoice_number  VARCHAR(255)          NULL,
+    invoice_date    datetime              NULL,
+    order_code      VARCHAR(255)          NULL,
+    gateway_message VARCHAR(255)          NULL,
+    invoice_status  VARCHAR(255)          NULL,
+    CONSTRAINT pk_comm_order_invoice PRIMARY KEY (id)
+);
+
+CREATE TABLE comm_order_line_item
+(
+    id              BIGINT AUTO_INCREMENT NOT NULL,
+    created_at      datetime              NOT NULL,
+    updated_at      datetime              NULL,
+    version         INT                   NULL,
+    name            VARCHAR(255)          NULL,
+    price           DOUBLE                NULL,
+    quantity        INT                   NULL,
+    sku             VARCHAR(255)          NULL,
+    item_key        VARCHAR(255)          NULL,
+    product_id      BIGINT                NULL,
+    variant_id      BIGINT                NULL,
+    subtotal        DOUBLE                NULL,
+    total_discounts DOUBLE                NULL,
+    total_price     DOUBLE                NULL,
+    order_id        BIGINT                NULL,
+    CONSTRAINT pk_comm_order_line_item PRIMARY KEY (id)
+);
+
+CREATE TABLE comm_payment_mode
+(
+    id            BIGINT AUTO_INCREMENT NOT NULL,
+    created_at    datetime              NOT NULL,
+    updated_at    datetime              NULL,
+    version       INT                   NULL,
+    code          VARCHAR(255)          NOT NULL,
+    name          VARCHAR(255)          NULL,
+    active        BIT(1)                NULL,
+    `description` VARCHAR(255)          NULL,
+    CONSTRAINT pk_comm_payment_mode PRIMARY KEY (id)
+);
+
+CREATE TABLE comm_payment_transaction
+(
+    id                     BIGINT AUTO_INCREMENT NOT NULL,
+    created_at             datetime              NOT NULL,
+    updated_at             datetime              NULL,
+    version                INT                   NULL,
+    amount                 INT                   NULL,
+    currency               VARCHAR(255)          NULL,
+    gateway_transaction_id VARCHAR(255)          NULL,
+    bank_transaction_id    VARCHAR(255)          NULL,
+    transaction_type       VARCHAR(255)          NULL,
+    transaction_date       datetime              NULL,
+    gateway_message        VARCHAR(255)          NULL,
+    order_id               BIGINT                NULL,
+    parent_id              BIGINT                NULL,
+    transaction_status     VARCHAR(255)          NULL,
+    CONSTRAINT pk_comm_payment_transaction PRIMARY KEY (id)
 );
 
 CREATE TABLE comm_product
@@ -73,6 +273,7 @@ CREATE TABLE comm_product
     `description`      TEXT                  NULL,
     quantity           INT                   NULL,
     price              DECIMAL(10, 2)        NULL,
+    sales_unit         VARCHAR(255)          NOT NULL,
     sku                VARCHAR(255)          NULL,
     days_to_ship       INT                   NULL,
     status             INT                   NULL,
@@ -128,25 +329,7 @@ CREATE TABLE comm_product_category_rel
     CONSTRAINT pk_comm_product_category_rel PRIMARY KEY (category_id, product_id)
 );
 
-CREATE TABLE comm_product_variant
-(
-    id             BIGINT AUTO_INCREMENT NOT NULL,
-    created_at     datetime              NOT NULL,
-    updated_at     datetime              NULL,
-    version        INT                   NULL,
-    price          DECIMAL(10, 2)        NULL,
-    quantity       INT                   NULL,
-    sku            VARCHAR(255)          NULL,
-    sort_order     INT                   NULL,
-    product_id     BIGINT                NULL,
-    image_id       BIGINT                NULL,
-    spec_value1_id BIGINT                NULL,
-    spec_value2_id BIGINT                NULL,
-    spec_value3_id BIGINT                NULL,
-    CONSTRAINT pk_comm_product_variant PRIMARY KEY (id)
-);
-
-CREATE TABLE product_image_entity
+CREATE TABLE comm_product_image
 (
     id             BIGINT AUTO_INCREMENT NOT NULL,
     created_at     datetime              NOT NULL,
@@ -159,11 +342,55 @@ CREATE TABLE product_image_entity
     normal         VARCHAR(255)          NULL,
     detail         VARCHAR(255)          NULL,
     product_id     BIGINT                NULL,
-    CONSTRAINT pk_productimageentity PRIMARY KEY (id)
+    CONSTRAINT pk_comm_product_image PRIMARY KEY (id)
+);
+
+CREATE TABLE comm_product_shippingmode_rel
+(
+    product_id       BIGINT NOT NULL,
+    shipping_mode_id BIGINT NOT NULL,
+    CONSTRAINT pk_comm_product_shippingmode_rel PRIMARY KEY (product_id, shipping_mode_id)
+);
+
+CREATE TABLE comm_product_variant
+(
+    id             BIGINT AUTO_INCREMENT NOT NULL,
+    created_at     datetime              NOT NULL,
+    updated_at     datetime              NULL,
+    version        INT                   NULL,
+    price          DECIMAL(10, 2)        NULL,
+    quantity       INT                   NULL,
+    reserve_stock  INT DEFAULT 0         NOT NULL,
+    sku            VARCHAR(255)          NULL,
+    sort_order     INT                   NULL,
+    product_id     BIGINT                NULL,
+    image_id       BIGINT                NULL,
+    spec_value1_id BIGINT                NULL,
+    spec_value2_id BIGINT                NULL,
+    spec_value3_id BIGINT                NULL,
+    CONSTRAINT pk_comm_product_variant PRIMARY KEY (id)
+);
+
+CREATE TABLE comm_shipping_mode
+(
+    id            BIGINT AUTO_INCREMENT NOT NULL,
+    created_at    datetime              NOT NULL,
+    updated_at    datetime              NULL,
+    version       INT                   NULL,
+    code          VARCHAR(255)          NOT NULL,
+    name          VARCHAR(255)          NULL,
+    `description` VARCHAR(255)          NULL,
+    active        BIT(1)                NULL,
+    shipping_cost DOUBLE                NULL,
+    mode_type     VARCHAR(255)          NULL,
+    CONSTRAINT pk_comm_shipping_mode PRIMARY KEY (id)
 );
 
 ALTER TABLE comm_cart
     ADD CONSTRAINT uc_comm_cart_code UNIQUE (code);
+
+ALTER TABLE comm_checkout
+    ADD CONSTRAINT uc_comm_checkout_code UNIQUE (code);
 
 ALTER TABLE comm_customer
     ADD CONSTRAINT uc_comm_customer_account UNIQUE (account);
@@ -174,5 +401,18 @@ ALTER TABLE comm_customer
 ALTER TABLE comm_customer
     ADD CONSTRAINT uc_comm_customer_phone UNIQUE (phone);
 
-ALTER TABLE product_image_entity
-    ADD CONSTRAINT uc_productimageentity_filename UNIQUE (filename);
+ALTER TABLE comm_order
+    ADD CONSTRAINT uc_comm_order_code UNIQUE (code);
+
+ALTER TABLE comm_payment_mode
+    ADD CONSTRAINT uc_comm_payment_mode_code UNIQUE (code);
+
+ALTER TABLE comm_product_image
+    ADD CONSTRAINT uc_comm_product_image_filename UNIQUE (filename);
+
+ALTER TABLE comm_shipping_mode
+    ADD CONSTRAINT uc_comm_shipping_mode_code UNIQUE (code);
+
+CREATE INDEX idx_cartentity_code ON comm_cart (code);
+
+CREATE INDEX idx_orderentity_code ON comm_order (code);

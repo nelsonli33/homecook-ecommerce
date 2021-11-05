@@ -11,12 +11,16 @@ public class ServerResponse<T> implements Serializable
     private String message;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Error> errors;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
     public static ServerResponse error(Integer errorCode, String errorMessage)
     {
         return new ServerResponse(errorCode, errorMessage);
+    }
+
+    public static ServerResponse success()
+    {
+        return new ServerResponse(0, "success");
     }
 
     public ServerResponse()

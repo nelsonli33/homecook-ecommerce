@@ -52,6 +52,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
         ServerResponse serverResponse = ServerResponse.builder()
                 .setCode(ex.getErrorCode().getCode())
                 .setMessage(ex.getMessage())
+                .setData(ex.getData())
                 .setErrors(errors)
                 .build();
 

@@ -40,10 +40,10 @@ public class CartLineItemEntity extends AbstractBaseEntity
     @Column(name = "subtotal")
     private Double subtotal;
 
-    @Column(name = "totalDiscounts")
+    @Column(name = "total_discounts")
     private Double totalDiscounts;
 
-    @Column(name = "totalPrice")
+    @Column(name = "total_price")
     private Double totalPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)

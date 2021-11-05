@@ -2,15 +2,13 @@ package com.homecook.homecookentity.entity;
 
 import com.homecook.homecookentity.constant.EntityConstant;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = EntityConstant.Table.ProductAttributeCategory)
 public class ProductAttributeCategoryEntity extends AbstractBaseEntity
 {
+    @Column(name = "name")
     private String name;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "attributeCategory")

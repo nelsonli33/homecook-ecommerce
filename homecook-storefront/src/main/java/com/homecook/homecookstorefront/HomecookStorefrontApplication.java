@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages = "com.homecook.*")
 @EnableJpaRepositories(basePackages = "com.homecook.homecookentity.repository", repositoryBaseClass = DefaultCustomJpaRepository.class)
-@EntityScan(basePackages = "com.homecook.homecookentity.entity")
+@EntityScan(basePackages = "com.homecook.homecookentity.*")
 public class HomecookStorefrontApplication
 {
 

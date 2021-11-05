@@ -16,28 +16,58 @@ import java.util.Set;
 @DynamicUpdate
 public class ProductEntity extends AbstractBaseEntity
 {
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "summary")
     private String summary;
+
     @Column(length = 65535, columnDefinition = "TEXT")
     private String description;
+
+    @Column(name = "quantity")
     private Integer quantity;
+
     @Column(columnDefinition = "DECIMAL(10,2)")
     private Double price;
+
+    @Column(name = "sales_unit", nullable = false)
+    private String salesUnit;
+
+    @Column(name = "sku")
     private String sku;
+
+    @Column(name = "days_to_ship")
     private Integer daysToShip;
+
+    @Column(name = "status")
     @ColumnDefault("0")
     private ProductStatusType status; // 商品上下架狀態：0下架, 1上架, 2已删除
+
+    @Column(name = "max_order_quantity")
     private Integer maxOrderQuantity;
+
+    @Column(name = "min_order_quantity")
     private Integer minOrderQuantity;
+
+    @Column(name = "meta_title")
     private String metaTitle;
-    @Column(length = 1000, columnDefinition = "TEXT")
+
+    @Column(name = "meta_description", length = 1000, columnDefinition = "TEXT")
     private String metaDescription;
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(name = EntityConstant.Table.Product2Category,
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<CategoryEntity> categories = new HashSet<>();
+
+    @ManyToMany(cascade = {CascadeType.MERGE})
+    @JoinTable(name = EntityConstant.Table.Product2ShippingMode,
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "shipping_mode_id"))
+    private Set<ShippingModeEntity> shippingModes = new HashSet<>();
+
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductSpecAttributeEntity> specs = new ArrayList<>();
@@ -48,6 +78,7 @@ public class ProductEntity extends AbstractBaseEntity
     @OneToMany(mappedBy = "product")
     @OrderBy("sortOrder ASC")
     private List<ProductImageEntity> images = new ArrayList<>();
+
 
     public String getName()
     {
@@ -97,6 +128,16 @@ public class ProductEntity extends AbstractBaseEntity
     public void setPrice(Double price)
     {
         this.price = price;
+    }
+
+    public String getSalesUnit()
+    {
+        return salesUnit;
+    }
+
+    public void setSalesUnit(String salesUnit)
+    {
+        this.salesUnit = salesUnit;
     }
 
     public String getSku()
@@ -177,6 +218,16 @@ public class ProductEntity extends AbstractBaseEntity
     public void setCategories(Set<CategoryEntity> categories)
     {
         this.categories = categories;
+    }
+
+    public Set<ShippingModeEntity> getShippingModes()
+    {
+        return shippingModes;
+    }
+
+    public void setShippingModes(Set<ShippingModeEntity> shippingModes)
+    {
+        this.shippingModes = shippingModes;
     }
 
     public List<ProductSpecAttributeEntity> getSpecs()

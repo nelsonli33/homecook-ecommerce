@@ -9,10 +9,13 @@ import java.util.List;
 @Entity
 @Table(name = EntityConstant.Table.ProductAttribute)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="type", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.INTEGER)
 public class ProductAttributeEntity extends AbstractBaseEntity
 {
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "sort_order")
     private Integer sortOrder;
 
     @OneToMany(mappedBy = "attribute", cascade = CascadeType.ALL, orphanRemoval = true)

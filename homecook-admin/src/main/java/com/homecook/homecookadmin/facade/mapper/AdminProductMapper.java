@@ -30,8 +30,8 @@ public abstract class AdminProductMapper
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(source = "categoryIds", target = "categories", qualifiedByName = "addProductCategories"),
-            @Mapping(target = "specs", ignore = true), // This is now mapped in AfterMapping
-            @Mapping(target = "variants", ignore = true) // This is now mapped in AfterMapping
+            @Mapping(target = "specs", ignore = true), // mapped in AfterMapping
+            @Mapping(target = "variants", ignore = true) // mapped in AfterMapping
     })
     public abstract ProductEntity convertToProductEntity(ProductDTO productDTO);
 
@@ -64,7 +64,7 @@ public abstract class AdminProductMapper
             {
                 ProductImageEntity productImageEntity = productImageEntities.get(i);
                 productImageEntity.setProduct(productEntity);
-                productImageEntity.setSortOrder(i+1);
+                productImageEntity.setSortOrder(i + 1);
             }
             productEntity.setImages(productImageEntities);
         }
@@ -73,11 +73,12 @@ public abstract class AdminProductMapper
             for (int i = 0; i < productImageEntities.size(); i++)
             {
                 ProductImageEntity productImageEntity = productImageEntities.get(i);
-                if (productImageEntity.getProduct() != null && !productImageEntity.getProduct().getId().equals(productEntity.getId())) {
-                    throw new HomecookAdminRuntimeException(InternalErrorCode.PRODUCT_IMAGE_ALREADY_IN_USE, "Product Image with id: "+ productImageEntity.getId() + "already in use.");
+                if (productImageEntity.getProduct() != null && !productImageEntity.getProduct().getId().equals(productEntity.getId()))
+                {
+                    throw new HomecookAdminRuntimeException(InternalErrorCode.PRODUCT_IMAGE_ALREADY_IN_USE, "Product Image with id: " + productImageEntity.getId() + "already in use.");
                 }
                 productImageEntity.setProduct(productEntity);
-                productImageEntity.setSortOrder(i+1);
+                productImageEntity.setSortOrder(i + 1);
             }
             productEntity.setImages(productImageEntities);
         }
@@ -160,6 +161,11 @@ public abstract class AdminProductMapper
         List<ProductVariantDTO> variantDTOs = productDTO.getVariants();
         if (CollectionUtils.isEmpty(variantDTOs))
         {
+            List<ProductVariantEntity> productVariantEntities = new ArrayList<>();
+            final ProductVariantEntity defaultVariant = createDefaultProductVariant(productDTO, productEntity);
+            productVariantEntities.add(defaultVariant);
+            productEntity.getVariants().clear();
+            productEntity.getVariants().addAll(productVariantEntities);
             return;
         }
 
@@ -218,6 +224,31 @@ public abstract class AdminProductMapper
 
         productEntity.getVariants().clear();
         productEntity.getVariants().addAll(productVariantEntities);
+    }
+
+    public ProductVariantEntity createDefaultProductVariant(ProductDTO productDTO, ProductEntity productEntity)
+    {
+        ProductVariantEntity variant = new ProductVariantEntity();
+        if (productDTO.getPrice() != null)
+        {
+            variant.setPrice(productDTO.getPrice().doubleValue());
+        }
+        if (productDTO.getQuantity() != null)
+        {
+            variant.setQuantity(productDTO.getQuantity());
+        }
+        if (productDTO.getSku() != null)
+        {
+            variant.setSku(productDTO.getSku());
+        }
+
+        variant.setProduct(productEntity);
+        if (productEntity.getImages() != null && CollectionUtils.isNotEmpty(productEntity.getImages()))
+        {
+            variant.setImage(productEntity.getImages().get(0));
+        }
+
+        return variant;
     }
 
     @InheritConfiguration
@@ -280,6 +311,9 @@ public abstract class AdminProductMapper
     public String getVariantName(ProductVariantEntity productVariantEntity)
     {
         StringBuilder builder = new StringBuilder();
+
+        final String productName = productVariantEntity.getProduct().getName();
+        builder.append(productName);
 
         ProductAttributeValueEntity specValue1 = productVariantEntity.getSpecValue1();
         if (specValue1 != null)

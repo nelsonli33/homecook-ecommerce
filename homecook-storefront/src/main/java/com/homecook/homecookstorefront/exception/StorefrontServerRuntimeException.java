@@ -8,12 +8,20 @@ public class StorefrontServerRuntimeException extends RuntimeException
 
     private InternalErrorCode errorCode;
     private BindingResult error;
+    private Object data;
 
 
     public StorefrontServerRuntimeException(InternalErrorCode errorCode, String message)
     {
         super(message);
         this.errorCode = errorCode;
+    }
+
+    public StorefrontServerRuntimeException(InternalErrorCode errorCode, String message, Object data)
+    {
+        super(message);
+        this.errorCode = errorCode;
+        this.data = data;
     }
 
     public StorefrontServerRuntimeException(InternalErrorCode errorCode, String message, BindingResult error)
@@ -43,6 +51,11 @@ public class StorefrontServerRuntimeException extends RuntimeException
     public InternalErrorCode getErrorCode()
     {
         return errorCode;
+    }
+
+    public Object getData()
+    {
+        return data;
     }
 
     public BindingResult getError()

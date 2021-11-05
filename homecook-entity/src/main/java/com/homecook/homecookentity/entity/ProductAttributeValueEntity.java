@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Table(name = EntityConstant.Table.ProductAttributeValue)
 public class ProductAttributeValueEntity extends AbstractBaseEntity
 {
+    @Column(name = "value")
     private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)

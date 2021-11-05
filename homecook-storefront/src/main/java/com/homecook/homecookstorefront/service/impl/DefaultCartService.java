@@ -46,7 +46,7 @@ public class DefaultCartService implements CartService
         final CartEntity cart = cartRepository.findCartEntityByCustomer(customerService.getCurrentCustomer());
         if (cart != null)
         {
-            return refreshCart(cart);
+            return cart;
         }
         else
         {
@@ -54,7 +54,8 @@ public class DefaultCartService implements CartService
         }
     }
 
-    private CartEntity refreshCart(CartEntity cart)
+    @Override
+    public CartEntity refreshCart(CartEntity cart)
     {
         validateParameterNotNullStandardMessage("cart", cart);
 
@@ -138,6 +139,15 @@ public class DefaultCartService implements CartService
             }
         }
         return null;
+    }
+
+    @Override
+    public void removeCart()
+    {
+        final CartEntity cart = getCartForCurrentCustomer();
+        final List<CartLineItemEntity> lineItems = cart.getLineItems();
+        modelService.removeAll(lineItems);
+        modelService.remove(cart);
     }
 
     private boolean updateCartLineItem(CartLineItemEntity lineItem)

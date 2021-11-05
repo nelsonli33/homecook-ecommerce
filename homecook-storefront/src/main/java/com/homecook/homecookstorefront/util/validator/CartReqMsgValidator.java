@@ -4,11 +4,13 @@ import com.homecook.homecookstorefront.error.InternalErrorCode;
 import com.homecook.homecookstorefront.exception.StorefrontServerRuntimeException;
 import com.homecook.homecookstorefront.model.AddToCartRequest;
 import com.homecook.homecookstorefront.model.UpdateCartRequest;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 
-public class CartReqMsgValidator
+@Component(value = "cartReqMsgValidator")
+public class CartReqMsgValidator extends AbstractReqMsgValidator
 {
-    public static void validateAddToCartRequest(AddToCartRequest addToCartRequest, BindingResult errors)
+    public void validateAddToCartRequest(AddToCartRequest addToCartRequest, BindingResult errors)
     {
         if (addToCartRequest == null)
         {
@@ -31,7 +33,7 @@ public class CartReqMsgValidator
         }
     }
 
-    public static void validateUpdateCartRequest(UpdateCartRequest updateCartRequest, BindingResult errors)
+    public void validateUpdateCartRequest(UpdateCartRequest updateCartRequest, BindingResult errors)
     {
         if (updateCartRequest == null)
         {

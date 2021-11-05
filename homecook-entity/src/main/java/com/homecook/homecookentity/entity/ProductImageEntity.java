@@ -1,19 +1,31 @@
 package com.homecook.homecookentity.entity;
 
+import com.homecook.homecookentity.constant.EntityConstant;
+
 import javax.persistence.*;
 import java.util.List;
 
 
-
+@Table(name = EntityConstant.Table.ProductImage)
 @Entity
 public class ProductImageEntity extends AbstractBaseEntity
 {
     @Column(nullable = false, unique = true)
     private String filename;
+
+    @Column(name = "originfilename")
     private String originfilename;
+
+    @Column(name = "sort_order")
     private Integer sortOrder;
+
+    @Column(name = "thumbnail")
     private String thumbnail;
+
+    @Column(name = "normal")
     private String normal;
+
+    @Column(name = "detail")
     private String detail;
 
     @ManyToOne(fetch = FetchType.LAZY)

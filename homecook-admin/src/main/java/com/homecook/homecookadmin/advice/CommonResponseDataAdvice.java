@@ -7,8 +7,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestControllerAdvice
 public class CommonResponseDataAdvice implements ResponseBodyAdvice<Object>
@@ -29,15 +32,28 @@ public class CommonResponseDataAdvice implements ResponseBodyAdvice<Object>
     @Override
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse)
     {
-        CommonResponse<Object> response = new CommonResponse<>(0, "success");
+        HttpServletResponse servletResponse = ((ServletServerHttpResponse) serverHttpResponse).getServletResponse();
 
-        if (null == o) {
+        if (servletResponse.getStatus() == 200)
+        {
+            CommonResponse<Object> response = new CommonResponse<>(0, "success");
+
+            if (null == o)
+            {
+                return response;
+            }
+            else if (o instanceof CommonResponse)
+            {
+                response = (CommonResponse<Object>) o;
+            }
+            else
+            {
+                response.setData(o);
+            }
+
             return response;
-        } else if (o instanceof CommonResponse) {
-            response = (CommonResponse<Object>) o;
-        } else {
-            response.setData(o);
         }
-        return response;
+
+        return o;
     }
 }

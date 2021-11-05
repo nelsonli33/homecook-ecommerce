@@ -31,6 +31,10 @@
         <guava.version>30.1-jre</guava.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <logback.version>1.2.3</logback.version>
+        <ecpay.logistics.version>1.1.2</ecpay.logistics.version>
+        <ecpay.invoice.version>2.0.2</ecpay.invoice.version>
+        <tappay.version>1.0.0</tappay.version>
+        <okhttp.version>4.9.0</okhttp.version>
     </properties>
 
     <modules>
@@ -106,6 +110,26 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.homecook</groupId>
+                <artifactId>ecpay-logistics</artifactId>
+                <version>${ecpay.logistics.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.homecook</groupId>
+                <artifactId>ecpay-invoice</artifactId>
+                <version>${ecpay.invoice.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.homecook</groupId>
+                <artifactId>tappay</artifactId>
+                <version>${tappay.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

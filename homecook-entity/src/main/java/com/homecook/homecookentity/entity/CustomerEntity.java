@@ -64,6 +64,8 @@ public class CustomerEntity extends AbstractBaseEntity
     @OneToMany(mappedBy = "customer")
     private List<OrderEntity> order;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<VoucherReceiveEntity> voucherReceives;
 
     public String getName()
     {
@@ -214,5 +216,15 @@ public class CustomerEntity extends AbstractBaseEntity
     public void setOrder(List<OrderEntity> order)
     {
         this.order = order;
+    }
+
+    public List<VoucherReceiveEntity> getVoucherReceives()
+    {
+        return voucherReceives;
+    }
+
+    public void setVoucherReceives(List<VoucherReceiveEntity> voucherReceives)
+    {
+        this.voucherReceives = voucherReceives;
     }
 }

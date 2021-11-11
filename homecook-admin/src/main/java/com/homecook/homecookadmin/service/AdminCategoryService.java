@@ -2,6 +2,7 @@ package com.homecook.homecookadmin.service;
 
 
 import com.homecook.homecookentity.entity.CategoryEntity;
+import com.homecook.homecookentity.entity.VoucherEntity;
 
 import java.util.List;
 
@@ -13,5 +14,7 @@ public interface AdminCategoryService
 
     CategoryEntity getCategoryForId(Long id);
 
-    void addParentCategory(CategoryEntity entity, Long parentId);
+    void addParentCategory(CategoryEntity categoryEntity, Long parentId);
+
+    VoucherEntity getActiveVoucherForCategory(CategoryEntity categoryEntity);
 }

@@ -386,6 +386,71 @@ CREATE TABLE comm_shipping_mode
     CONSTRAINT pk_comm_shipping_mode PRIMARY KEY (id)
 );
 
+CREATE TABLE comm_voucher
+(
+    id                  BIGINT AUTO_INCREMENT NOT NULL,
+    created_at          datetime              NOT NULL,
+    updated_at          datetime              NULL,
+    version             INT                   NULL,
+    code                VARCHAR(255)          NOT NULL,
+    name                VARCHAR(255)          NULL,
+    note                VARCHAR(255)          NULL,
+    use_type            INT                   NULL,
+    value_type          INT                   NULL,
+    usage_count         INT                   NULL,
+    receive_count       INT                   NULL,
+    usage_limit         INT                   NULL,
+    max_discount_value  DOUBLE                NULL,
+    percentage          DOUBLE                NULL,
+    value               DOUBLE                NULL,
+    minimum_amount      DOUBLE                NULL,
+    current_usage_count INT                   NULL,
+    start_at            datetime              NULL,
+    end_at              datetime              NULL,
+    display             BIT(1)                NULL,
+    CONSTRAINT pk_comm_voucher PRIMARY KEY (id)
+);
+
+CREATE TABLE comm_voucher_buy_record
+(
+    id          BIGINT AUTO_INCREMENT NOT NULL,
+    created_at  datetime              NOT NULL,
+    updated_at  datetime              NULL,
+    version     INT                   NULL,
+    voucher_id  BIGINT                NULL,
+    customer_id BIGINT                NULL,
+    order_id    BIGINT                NULL,
+    use_at      datetime              NULL,
+    CONSTRAINT pk_comm_voucher_buy_record PRIMARY KEY (id)
+);
+
+CREATE TABLE comm_voucher_category_restrictions_rel
+(
+    category_id BIGINT NOT NULL,
+    voucher_id  BIGINT NOT NULL,
+    CONSTRAINT pk_comm_voucher_category_restrictions_rel PRIMARY KEY (category_id, voucher_id)
+);
+
+CREATE TABLE comm_voucher_product_restrictions_rel
+(
+    product_id BIGINT NOT NULL,
+    voucher_id BIGINT NOT NULL,
+    CONSTRAINT pk_comm_voucher_product_restrictions_rel PRIMARY KEY (product_id, voucher_id)
+);
+
+CREATE TABLE comm_voucher_receive
+(
+    id          BIGINT AUTO_INCREMENT NOT NULL,
+    created_at  datetime              NOT NULL,
+    updated_at  datetime              NULL,
+    version     INT                   NULL,
+    customer_id BIGINT                NULL,
+    voucher_id  BIGINT                NULL,
+    use_status  INT                   NULL,
+    receive_at  datetime              NULL,
+    CONSTRAINT pk_comm_voucher_receive PRIMARY KEY (id)
+);
+
 ALTER TABLE comm_cart
     ADD CONSTRAINT uc_comm_cart_code UNIQUE (code);
 

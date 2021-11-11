@@ -1,12 +1,14 @@
 package com.homecook.homecookentity.entity;
 
 import com.homecook.homecookentity.constant.EntityConstant;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Table(name = EntityConstant.Table.Category)
+@DynamicUpdate
 @Entity
 public class CategoryEntity extends AbstractBaseEntity
 {
@@ -29,7 +31,7 @@ public class CategoryEntity extends AbstractBaseEntity
     @JoinColumn(name = "parent_id")
     private CategoryEntity parent;
 
-    @OneToMany(cascade= CascadeType.ALL, mappedBy="parent")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
     private Set<CategoryEntity> children = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -39,6 +41,8 @@ public class CategoryEntity extends AbstractBaseEntity
     @ManyToMany(mappedBy = "categories")
     private Set<ProductEntity> products = new HashSet<>();
 
+    @ManyToMany(mappedBy = "appliedCategories")
+    private Set<VoucherEntity> vouchers = new HashSet<>();
 
     public String getName()
     {
@@ -123,5 +127,15 @@ public class CategoryEntity extends AbstractBaseEntity
     public void setProducts(Set<ProductEntity> products)
     {
         this.products = products;
+    }
+
+    public Set<VoucherEntity> getVouchers()
+    {
+        return vouchers;
+    }
+
+    public void setVouchers(Set<VoucherEntity> vouchers)
+    {
+        this.vouchers = vouchers;
     }
 }

@@ -281,7 +281,7 @@ public class DefaultAdminProductImageService extends AbstractBaseService impleme
         }
         catch (IOException | VipsException e)
         {
-            throw new HomecookAdminRuntimeException(InternalErrorCode.IMAGE_RESIZE_ERROR);
+            throw new HomecookAdminRuntimeException(InternalErrorCode.IMAGE_RESIZE_ERROR, "Image resize error");
         }
     }
 

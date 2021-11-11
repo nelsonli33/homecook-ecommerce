@@ -1,7 +1,7 @@
 package com.homecook.homecookadmin.advice;
 
 import com.homecook.homecookadmin.annotation.IgnoreResponseAdvice;
-import com.homecook.homecookadmin.model.CommonResponse;
+import com.homecook.homecookadmin.model.ServerResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import javax.servlet.http.HttpServletResponse;
 
 @RestControllerAdvice
-public class CommonResponseDataAdvice implements ResponseBodyAdvice<Object>
+public class ServerResponseDataAdvice implements ResponseBodyAdvice<Object>
 {
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass)
@@ -36,21 +36,20 @@ public class CommonResponseDataAdvice implements ResponseBodyAdvice<Object>
 
         if (servletResponse.getStatus() == 200)
         {
-            CommonResponse<Object> response = new CommonResponse<>(0, "success");
+            ServerResponse<Object> response = new ServerResponse<>(0, "success");
 
             if (null == o)
             {
                 return response;
             }
-            else if (o instanceof CommonResponse)
+            else if (o instanceof ServerResponse)
             {
-                response = (CommonResponse<Object>) o;
+                response = (ServerResponse<Object>) o;
             }
             else
             {
                 response.setData(o);
             }
-
             return response;
         }
 

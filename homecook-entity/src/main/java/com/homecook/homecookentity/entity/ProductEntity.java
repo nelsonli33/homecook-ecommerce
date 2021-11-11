@@ -79,6 +79,9 @@ public class ProductEntity extends AbstractBaseEntity
     @OrderBy("sortOrder ASC")
     private List<ProductImageEntity> images = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "appliedProducts")
+    private Set<VoucherEntity> vouchers = new HashSet<>();
+
 
     public String getName()
     {
@@ -258,5 +261,15 @@ public class ProductEntity extends AbstractBaseEntity
     public void setImages(List<ProductImageEntity> images)
     {
         this.images = images;
+    }
+
+    public Set<VoucherEntity> getVouchers()
+    {
+        return vouchers;
+    }
+
+    public void setVouchers(Set<VoucherEntity> vouchers)
+    {
+        this.vouchers = vouchers;
     }
 }

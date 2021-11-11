@@ -1,7 +1,10 @@
 package com.homecook.homecookadmin.facade.mapper;
 
 import com.google.common.collect.Sets;
-import com.homecook.homecookadmin.dto.*;
+import com.homecook.homecookadmin.dto.ProductDTO;
+import com.homecook.homecookadmin.dto.ProductSpecDTO;
+import com.homecook.homecookadmin.dto.ProductSpecValueDTO;
+import com.homecook.homecookadmin.dto.ProductVariantDTO;
 import com.homecook.homecookadmin.error.InternalErrorCode;
 import com.homecook.homecookadmin.exception.HomecookAdminRuntimeException;
 import com.homecook.homecookadmin.service.AdminCategoryService;
@@ -19,7 +22,8 @@ import java.util.*;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         componentModel = "spring",
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        uses = {AdminCategoryMapper.class}
 )
 public abstract class AdminProductMapper
 {
@@ -270,12 +274,6 @@ public abstract class AdminProductMapper
 
     public abstract List<ProductDTO> convertAllToProductDTO(List<ProductEntity> productEntities);
 
-    @Mappings({
-            @Mapping(target = "sortOrder", ignore = true),
-            @Mapping(target = "metaTitle", ignore = true),
-            @Mapping(target = "metaDescription", ignore = true)
-    })
-    public abstract CategoryDTO convertToCategoryDTO(CategoryEntity categoryEntity);
 
     @Mapping(target = "values", ignore = true)
     public abstract ProductSpecDTO convertToProductSpecDTO(ProductSpecAttributeEntity attributeEntity);

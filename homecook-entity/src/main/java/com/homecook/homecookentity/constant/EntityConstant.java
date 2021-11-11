@@ -35,9 +35,12 @@ public interface EntityConstant
         String OrderLineItem = _Prefix + "order_line_item";
         String OrderInvoice = _Prefix + "order_invoice";
         String PaymentTransaction = _Prefix + "payment_transaction";
-
         String CreditCardPaymentInfo = _Prefix + "credit_card_payment_info";
-        String Bank = _Prefix + "bank";
 
+        String Voucher = _Prefix + "voucher";
+        String VoucherReceive = _Prefix + "voucher_receive";
+        String VoucherBuyRecord = _Prefix + "voucher_buy_record";
+        String Voucher2CategoryRestrictions = _Prefix + "voucher_category_restrictions_rel";
+        String Voucher2ProductRestrictions = _Prefix + "voucher_product_restrictions_rel";
     }
 }

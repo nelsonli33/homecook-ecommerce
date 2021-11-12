@@ -8,6 +8,8 @@ public interface CustomerFacade
 {
     CustomerDTO register(RegisterDTO registerDTO);
 
+    void changePassword(String oldPassword, String newPassword);
+
     CustomerDTO getCurrentCustomer();
 
     CustomerDTO updateProfile(CustomerDTO customerDTO);

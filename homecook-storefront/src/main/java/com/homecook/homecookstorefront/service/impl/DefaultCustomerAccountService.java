@@ -64,6 +64,23 @@ public class DefaultCustomerAccountService implements CustomerAccountService
     }
 
     @Override
+    public void changePassword(CustomerEntity customerEntity, String oldPassword, String newPassword)
+    {
+        validateParameterNotNullStandardMessage("customerEntity", customerEntity);
+
+        if (getPasswordEncoder().matches(oldPassword, customerEntity.getPassword()))
+        {
+            String encodedPassword = getPasswordEncoder().encode(newPassword);
+            customerEntity.setPassword(encodedPassword);
+            getModelService().save(customerEntity);
+        }
+        else
+        {
+            throw new StorefrontServerRuntimeException(InternalErrorCode.CUSTOMER_PASSWORD_MISMATCH, "Password mismatch");
+        }
+    }
+
+    @Override
     public CustomerEntity updateProfile(CustomerEntity customerEntity, String name, Integer gender, Date birthday)
     {
         validateParameterNotNullStandardMessage("customerEntity", customerEntity);

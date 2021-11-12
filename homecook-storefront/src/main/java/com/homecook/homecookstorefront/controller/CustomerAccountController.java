@@ -5,6 +5,7 @@ import com.homecook.homecookstorefront.dto.*;
 import com.homecook.homecookstorefront.facade.CustomerFacade;
 import com.homecook.homecookstorefront.model.*;
 import com.homecook.homecookstorefront.util.validator.AddressReqMsgValidator;
+import com.homecook.homecookstorefront.util.validator.CustomerAccountReqMsgValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +20,20 @@ public class CustomerAccountController
     private CustomerFacade customerFacade;
     private CustomerRestMapper customerRestMapper;
     private AddressReqMsgValidator addressReqMsgValidator;
+    private CustomerAccountReqMsgValidator customerAccountReqMsgValidator;
 
     @Autowired
-    public CustomerAccountController(CustomerFacade customerFacade, CustomerRestMapper customerRestMapper, AddressReqMsgValidator addressReqMsgValidator)
+    public CustomerAccountController(
+            CustomerFacade customerFacade,
+            CustomerRestMapper customerRestMapper,
+            AddressReqMsgValidator addressReqMsgValidator,
+            CustomerAccountReqMsgValidator customerAccountReqMsgValidator
+    )
     {
         this.customerFacade = customerFacade;
         this.customerRestMapper = customerRestMapper;
         this.addressReqMsgValidator = addressReqMsgValidator;
+        this.customerAccountReqMsgValidator = customerAccountReqMsgValidator;
     }
 
     @GetMapping(value = "/api/v1/customer/account/profile")
@@ -53,6 +61,18 @@ public class CustomerAccountController
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(updatedCustomerProfile);
+    }
+
+    @PostMapping(value = "/api/v1/customer/account/update-password")
+    public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordRequest request, BindingResult errors)
+    {
+        customerAccountReqMsgValidator.validateUpdatePasswordRequest(request, errors);
+
+        customerFacade.changePassword(request.getCurrentPassword(), request.getNewPassword());
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ServerResponse.success());
     }
 
     @GetMapping(value = "/api/v1/customer/account/addresses")

@@ -12,6 +12,8 @@ public interface CustomerAccountService
 {
     CustomerEntity register(CustomerEntity customerEntity, String password);
 
+    void changePassword(CustomerEntity customerEntity, String oldPassword, String newPassword);
+
     CustomerEntity updateProfile(CustomerEntity customerEntity, String name, Integer gender, Date birthday);
 
     List<AddressEntity> getAddresses(CustomerEntity customerEntity);

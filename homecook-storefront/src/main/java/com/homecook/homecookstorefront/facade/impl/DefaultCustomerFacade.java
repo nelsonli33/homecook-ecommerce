@@ -52,6 +52,13 @@ public class DefaultCustomerFacade implements CustomerFacade
     }
 
     @Override
+    public void changePassword(String oldPassword, String newPassword)
+    {
+        final CustomerEntity currentCustomer = getCustomerService().getCurrentCustomer();
+        getCustomerAccountService().changePassword(currentCustomer, oldPassword, newPassword);
+    }
+
+    @Override
     public CustomerDTO getCurrentCustomer()
     {
         final CustomerEntity currentCustomer = getCustomerService().getCurrentCustomer();

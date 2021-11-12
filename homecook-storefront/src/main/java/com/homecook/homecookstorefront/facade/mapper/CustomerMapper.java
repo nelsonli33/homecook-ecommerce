@@ -4,6 +4,7 @@ import com.homecook.homecookentity.entity.AddressEntity;
 import com.homecook.homecookentity.entity.CustomerEntity;
 import com.homecook.homecookentity.entity.InvoiceSettingEntity;
 import com.homecook.homecookentity.entity.ShippingModeEntity;
+import com.homecook.homecookentity.type.GenderType;
 import com.homecook.homecookstorefront.dto.*;
 import com.homecook.homecookstorefront.service.ShippingService;
 import org.mapstruct.*;
@@ -75,6 +76,16 @@ public abstract class CustomerMapper
     public abstract CompanyInvoiceDTO convertToCompanyInvoiceDTO(InvoiceSettingEntity invoiceSettingEntity);
 
     public abstract DonationInvoiceDTO convertToDonationInvoiceDTO(InvoiceSettingEntity invoiceSettingEntity);
+
+
+    public Integer genderConverter(GenderType genderType)
+    {
+        if (genderType != null)
+        {
+            return genderType.getValue();
+        }
+        return null;
+    }
 
 
     public ShippingService getShippingModeService()

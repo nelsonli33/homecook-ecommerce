@@ -1,6 +1,7 @@
 package com.homecook.homecookentity.entity;
 
 import com.homecook.homecookentity.constant.EntityConstant;
+import com.homecook.homecookentity.type.GenderType;
 import com.homecook.homecookentity.type.InvoiceType;
 
 import javax.persistence.*;
@@ -12,11 +13,11 @@ import java.util.List;
 @Entity
 public class CustomerEntity extends AbstractBaseEntity
 {
-    @Column(name = "name")
-    private String name;
-
     @Column(name = "account", nullable = false, unique = true)
     private String account;
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "password")
     private String password;
@@ -26,6 +27,9 @@ public class CustomerEntity extends AbstractBaseEntity
 
     @Column(name = "phone", unique = true)
     private String phone;
+
+    @Column(name = "gender")
+    private GenderType gender;
 
     @Column(name = "birthday")
     private Date birthday;
@@ -67,15 +71,6 @@ public class CustomerEntity extends AbstractBaseEntity
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VoucherReceiveEntity> voucherReceives;
 
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
 
     public String getAccount()
     {
@@ -85,6 +80,16 @@ public class CustomerEntity extends AbstractBaseEntity
     public void setAccount(String account)
     {
         this.account = account;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     public String getPassword()
@@ -115,6 +120,16 @@ public class CustomerEntity extends AbstractBaseEntity
     public void setPhone(String phone)
     {
         this.phone = phone;
+    }
+
+    public GenderType getGender()
+    {
+        return gender;
+    }
+
+    public void setGender(GenderType gender)
+    {
+        this.gender = gender;
     }
 
     public Date getBirthday()
@@ -157,6 +172,16 @@ public class CustomerEntity extends AbstractBaseEntity
         this.lastCheckoutShipmentAddress = lastCheckoutShipmentAddress;
     }
 
+    public InvoiceType getDefaultInvoiceType()
+    {
+        return defaultInvoiceType;
+    }
+
+    public void setDefaultInvoiceType(InvoiceType defaultInvoiceType)
+    {
+        this.defaultInvoiceType = defaultInvoiceType;
+    }
+
     public InvoiceSettingEntity getCompanyInvoiceSetting()
     {
         return companyInvoiceSetting;
@@ -177,16 +202,6 @@ public class CustomerEntity extends AbstractBaseEntity
         this.donationInvoiceSetting = donationInvoiceSetting;
     }
 
-    public InvoiceType getDefaultInvoiceType()
-    {
-        return defaultInvoiceType;
-    }
-
-    public void setDefaultInvoiceType(InvoiceType defaultInvoiceType)
-    {
-        this.defaultInvoiceType = defaultInvoiceType;
-    }
-
     public InvoiceCarrierEntity getInvoiceCarrier()
     {
         return invoiceCarrier;
@@ -196,7 +211,6 @@ public class CustomerEntity extends AbstractBaseEntity
     {
         this.invoiceCarrier = invoiceCarrier;
     }
-
 
     public PaymentModeEntity getDefaultPaymentMode()
     {

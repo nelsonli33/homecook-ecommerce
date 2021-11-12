@@ -1,15 +1,42 @@
-package com.homecook.homecookstorefront.dto;
+package com.homecook.homecookstorefront.model;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.sql.Date;
 
-public class CustomerDTO
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+        "id",
+        "account",
+        "name",
+        "email",
+        "phone",
+        "gender",
+        "birthday"
+})
+public class CustomerProfile
 {
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("account")
     private String account;
+
+    @JsonProperty("name")
     private String name;
+
+    @JsonProperty("email")
     private String email;
+
+    @JsonProperty("phone")
     private String phone;
+
+    @JsonProperty("gender")
     private Integer gender;
+
+    @JsonProperty("birthday")
     private Date birthday;
 
     public Long getId()

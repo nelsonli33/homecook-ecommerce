@@ -1,11 +1,7 @@
 package com.homecook.homecookstorefront.controller;
 
-import com.homecook.homecookentity.service.ModelService;
 import com.homecook.homecookstorefront.controller.mapper.CustomerRestMapper;
-import com.homecook.homecookstorefront.dto.AddressDTO;
-import com.homecook.homecookstorefront.dto.CompanyInvoiceDTO;
-import com.homecook.homecookstorefront.dto.DonationInvoiceDTO;
-import com.homecook.homecookstorefront.dto.InvoiceSettingDTO;
+import com.homecook.homecookstorefront.dto.*;
 import com.homecook.homecookstorefront.facade.CustomerFacade;
 import com.homecook.homecookstorefront.model.*;
 import com.homecook.homecookstorefront.util.validator.AddressReqMsgValidator;
@@ -23,8 +19,6 @@ public class CustomerAccountController
     private CustomerFacade customerFacade;
     private CustomerRestMapper customerRestMapper;
     private AddressReqMsgValidator addressReqMsgValidator;
-    @Autowired
-    private ModelService modelService;
 
     @Autowired
     public CustomerAccountController(CustomerFacade customerFacade, CustomerRestMapper customerRestMapper, AddressReqMsgValidator addressReqMsgValidator)
@@ -32,6 +26,17 @@ public class CustomerAccountController
         this.customerFacade = customerFacade;
         this.customerRestMapper = customerRestMapper;
         this.addressReqMsgValidator = addressReqMsgValidator;
+    }
+
+    @GetMapping(value = "/api/v1/customer/account/profile")
+    public ResponseEntity<CustomerProfile> getCustomerProfile()
+    {
+        final CustomerDTO customerDTO = customerFacade.getCustomerProfile();
+        final CustomerProfile customerProfile = customerRestMapper.toCustomerProfile(customerDTO);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(customerProfile);
     }
 
     @GetMapping(value = "/api/v1/customer/account/addresses")

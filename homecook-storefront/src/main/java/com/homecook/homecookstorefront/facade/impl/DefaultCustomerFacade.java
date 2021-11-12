@@ -52,6 +52,13 @@ public class DefaultCustomerFacade implements CustomerFacade
     }
 
     @Override
+    public CustomerDTO getCustomerProfile()
+    {
+        final CustomerEntity currentCustomer = getCustomerService().getCurrentCustomer();
+        return getCustomerMapper().convertToCustomerDTO(currentCustomer);
+    }
+
+    @Override
     public List<AddressDTO> getAddresses()
     {
         final CustomerEntity currentCustomer = getCustomerService().getCurrentCustomer();

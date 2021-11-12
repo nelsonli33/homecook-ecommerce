@@ -8,6 +8,8 @@ public interface CustomerFacade
 {
     CustomerDTO register(RegisterDTO registerDTO);
 
+    CustomerDTO getCustomerProfile();
+
     List<AddressDTO> getAddresses();
 
     AddressDTO getAddress(Long addressId);

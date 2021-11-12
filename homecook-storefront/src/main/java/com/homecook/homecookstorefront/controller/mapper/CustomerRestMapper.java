@@ -15,6 +15,14 @@ import java.util.List;
 )
 public interface CustomerRestMapper
 {
+
+    @Mappings({
+            @Mapping(target = "email", expression = "java(com.homecook.homecookstorefront.util.MaskUtil.maskEmailAddress(customerDTO.getEmail()))"),
+            @Mapping(target = "phone", expression = "java(com.homecook.homecookstorefront.util.MaskUtil.maskPhoneNumber(customerDTO.getPhone()))")
+    })
+    CustomerProfile toCustomerProfile(CustomerDTO customerDTO);
+
+
     @Mapping(source = "code", target = "shippingModeCode")
     AddressDTO toCustomerAddressDTO(CreateAddressRequest createAddressRequest);
 

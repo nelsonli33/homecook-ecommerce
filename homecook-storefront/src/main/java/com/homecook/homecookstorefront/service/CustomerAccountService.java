@@ -5,11 +5,14 @@ import com.homecook.homecookentity.entity.CustomerEntity;
 import com.homecook.homecookentity.entity.InvoiceSettingEntity;
 import com.homecook.homecookentity.entity.ShippingModeEntity;
 
+import java.util.Date;
 import java.util.List;
 
 public interface CustomerAccountService
 {
     CustomerEntity register(CustomerEntity customerEntity, String password);
+
+    CustomerEntity updateProfile(CustomerEntity customerEntity, String name, Integer gender, Date birthday);
 
     List<AddressEntity> getAddresses(CustomerEntity customerEntity);
 

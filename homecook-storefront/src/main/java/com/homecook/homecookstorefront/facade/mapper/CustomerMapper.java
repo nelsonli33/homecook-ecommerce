@@ -1,5 +1,6 @@
 package com.homecook.homecookstorefront.facade.mapper;
 
+import com.homecook.homecookcommon.mapper.DateMapper;
 import com.homecook.homecookentity.entity.AddressEntity;
 import com.homecook.homecookentity.entity.CustomerEntity;
 import com.homecook.homecookentity.entity.InvoiceSettingEntity;
@@ -17,7 +18,7 @@ import java.util.List;
         componentModel = "spring",
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        uses = {ShippingModeMapper.class}
+        uses = {DateMapper.class, ShippingModeMapper.class}
 )
 public abstract class CustomerMapper
 {

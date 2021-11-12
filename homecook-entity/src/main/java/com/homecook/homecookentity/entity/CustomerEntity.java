@@ -3,12 +3,14 @@ package com.homecook.homecookentity.entity;
 import com.homecook.homecookentity.constant.EntityConstant;
 import com.homecook.homecookentity.type.GenderType;
 import com.homecook.homecookentity.type.InvoiceType;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+@DynamicUpdate
 @Table(name = EntityConstant.Table.Customer)
 @Entity
 public class CustomerEntity extends AbstractBaseEntity

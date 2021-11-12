@@ -6,6 +6,7 @@ import com.homecook.homecookentity.entity.InvoiceSettingEntity;
 import com.homecook.homecookentity.entity.ShippingModeEntity;
 import com.homecook.homecookentity.repository.CustomerRepository;
 import com.homecook.homecookentity.service.ModelService;
+import com.homecook.homecookentity.type.GenderType;
 import com.homecook.homecookentity.type.ShippingModeType;
 import com.homecook.homecookstorefront.error.InternalErrorCode;
 import com.homecook.homecookstorefront.exception.StorefrontServerRuntimeException;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -60,6 +62,18 @@ public class DefaultCustomerAccountService implements CustomerAccountService
 
         return getCustomerRepository().save(customerEntity);
     }
+
+    @Override
+    public CustomerEntity updateProfile(CustomerEntity customerEntity, String name, Integer gender, Date birthday)
+    {
+        validateParameterNotNullStandardMessage("customerEntity", customerEntity);
+        customerEntity.setName(name);
+        customerEntity.setGender(GenderType.valueOf(gender));
+        customerEntity.setBirthday(birthday);
+
+        return getCustomerRepository().save(customerEntity);
+    }
+
 
     @Override
     public List<AddressEntity> getAddresses(CustomerEntity customerEntity)

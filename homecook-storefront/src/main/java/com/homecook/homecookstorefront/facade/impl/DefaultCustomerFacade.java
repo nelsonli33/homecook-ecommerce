@@ -52,10 +52,20 @@ public class DefaultCustomerFacade implements CustomerFacade
     }
 
     @Override
-    public CustomerDTO getCustomerProfile()
+    public CustomerDTO getCurrentCustomer()
     {
         final CustomerEntity currentCustomer = getCustomerService().getCurrentCustomer();
         return getCustomerMapper().convertToCustomerDTO(currentCustomer);
+    }
+
+    @Override
+    public CustomerDTO updateProfile(CustomerDTO customerDTO)
+    {
+        final CustomerEntity currentCustomer = getCustomerService().getCurrentCustomer();
+        final CustomerEntity updatedCustomer
+                = getCustomerAccountService().updateProfile(currentCustomer, customerDTO.getName(), customerDTO.getGender(), customerDTO.getBirthday());
+
+        return getCustomerMapper().convertToCustomerDTO(updatedCustomer);
     }
 
     @Override

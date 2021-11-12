@@ -17,11 +17,19 @@ public interface DateMapper
 {
     default Date convert(String date)
     {
+        if (date == null || date.isEmpty())
+        {
+            return null;
+        }
         return Date.from(ZonedDateTime.parse(date).toInstant());
     }
 
     default String format(Date date)
     {
+        if (date == null)
+        {
+            return "";
+        }
         TimeZone tz = TimeZone.getTimeZone("UTC");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
         df.setTimeZone(tz);

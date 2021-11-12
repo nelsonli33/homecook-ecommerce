@@ -29,14 +29,30 @@ public class CustomerAccountController
     }
 
     @GetMapping(value = "/api/v1/customer/account/profile")
-    public ResponseEntity<CustomerProfile> getCustomerProfile()
+    public ResponseEntity<CustomerProfile> getProfile()
     {
-        final CustomerDTO customerDTO = customerFacade.getCustomerProfile();
+        final CustomerDTO customerDTO = customerFacade.getCurrentCustomer();
         final CustomerProfile customerProfile = customerRestMapper.toCustomerProfile(customerDTO);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(customerProfile);
+    }
+
+    @PutMapping(value = "/api/v1/customer/account/profile")
+    public ResponseEntity<CustomerProfile> updateProfile(@RequestBody UpdateCustomerProfileRequest request)
+    {
+
+        final CustomerDTO customerDTO = customerFacade.getCurrentCustomer();
+        customerRestMapper.updateCustomerProfile(request, customerDTO);
+
+        final CustomerDTO updatedCustomerDTO = customerFacade.updateProfile(customerDTO);
+        final CustomerProfile updatedCustomerProfile = customerRestMapper.toCustomerProfile(updatedCustomerDTO);
+
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updatedCustomerProfile);
     }
 
     @GetMapping(value = "/api/v1/customer/account/addresses")

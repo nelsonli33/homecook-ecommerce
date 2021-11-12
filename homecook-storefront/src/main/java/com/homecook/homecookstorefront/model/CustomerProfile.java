@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.sql.Date;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -37,7 +35,7 @@ public class CustomerProfile
     private Integer gender;
 
     @JsonProperty("birthday")
-    private Date birthday;
+    private String birthday;
 
     public Long getId()
     {
@@ -99,12 +97,12 @@ public class CustomerProfile
         this.gender = gender;
     }
 
-    public Date getBirthday()
+    public String getBirthday()
     {
         return birthday;
     }
 
-    public void setBirthday(Date birthday)
+    public void setBirthday(String birthday)
     {
         this.birthday = birthday;
     }

@@ -8,7 +8,9 @@ public interface CustomerFacade
 {
     CustomerDTO register(RegisterDTO registerDTO);
 
-    CustomerDTO getCustomerProfile();
+    CustomerDTO getCurrentCustomer();
+
+    CustomerDTO updateProfile(CustomerDTO customerDTO);
 
     List<AddressDTO> getAddresses();
 
